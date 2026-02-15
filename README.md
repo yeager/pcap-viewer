@@ -17,6 +17,42 @@ A comprehensive GTK4/Adwaita network analysis suite for pcap/pcapng captures wit
 - **Drag-and-Drop**: Easy file loading interface
 - **Internationalized**: Multi-language support via gettext
 
+## Screenshots
+
+PacketLens provides a comprehensive multi-tab interface for network analysis:
+
+### Main Packet View
+![Packet List](data/screenshots/packetlens-packets.png)
+*Three-pane Wireshark-style interface with packet list, protocol layers, and hex dump*
+
+### Protocol Statistics  
+![Protocol Stats](data/screenshots/packetlens-protocol-stats.png)
+*Visual breakdown of protocol distribution and traffic patterns*
+
+### Conversation Analysis
+![Conversations](data/screenshots/packetlens-conversations.png)
+*Network flows between endpoints with detailed statistics*
+
+### DNS Analysis
+![DNS Analysis](data/screenshots/packetlens-dns.png)
+*DNS query/response tracking and domain analysis*
+
+### HTTP Analysis
+![HTTP Analysis](data/screenshots/packetlens-http.png)
+*HTTP request/response extraction and header inspection*
+
+### TLS Analysis  
+![TLS Analysis](data/screenshots/packetlens-tls.png)
+*Certificate inspection and cipher suite analysis*
+
+### File Extraction
+![File Extraction](data/screenshots/packetlens-files.png)
+*Extract files from network transfers*
+
+### Timeline View
+![Timeline](data/screenshots/packetlens-timeline.png)
+*Chronological visualization of network events*
+
 ## Installation
 
 ### Debian/Ubuntu
@@ -47,7 +83,7 @@ packetlens
 
 This app is translated via Transifex. Help translate it into your language!
 
-**[→ Translate on Transifex](https://app.transifex.com/danielnylander/pcap-viewer/)**
+**[→ Translate on Transifex](https://app.transifex.com/danielnylander/packetlens/)**
 
 Currently supported: Swedish (sv). More languages welcome!
 

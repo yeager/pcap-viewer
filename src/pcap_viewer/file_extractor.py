@@ -70,7 +70,7 @@ class FileObject(GObject.Object):
     def stream_id(self):
         return self._stream_id
 
-    @GObject.Property(type=bool)
+    @GObject.Property(type=bool, default=False)
     def is_previewable(self):
         return self._is_previewable
 

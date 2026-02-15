@@ -128,7 +128,7 @@ class TLSConnectionObject(GObject.Object):
     def cert_expiry(self):
         return self._cert_expiry
 
-    @GObject.Property(type=bool)
+    @GObject.Property(type=bool, default=False)
     def has_issues(self):
         return self._has_issues
 

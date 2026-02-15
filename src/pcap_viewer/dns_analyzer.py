@@ -79,7 +79,7 @@ class DNSRecordObject(GObject.Object):
     def rcode(self):
         return self._rcode
 
-    @GObject.Property(type=bool)
+    @GObject.Property(type=bool, default=False)
     def is_response(self):
         return self._is_response
 

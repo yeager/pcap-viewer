@@ -14,6 +14,13 @@ from . import __version__
 from .pcap_parser import PcapFile, get_layers, format_hex
 from .hex_view import HexView
 from .stats import compute_stats
+from .file_extractor import FileExtractorView
+from .conversations import ConversationView
+from .protocol_stats import ProtocolStatsView
+from .dns_analyzer import DNSAnalyzerView
+from .tls_analyzer import TLSAnalyzerView
+from .http_analyzer import HTTPAnalyzerView
+from .timeline import TimelineView
 
 # i18n
 LOCALE_DIR = os.path.join(os.path.dirname(__file__), "..", "..", "po")
@@ -116,10 +123,29 @@ class PcapViewerWindow(Adw.ApplicationWindow):
 
         # HeaderBar
         header = Adw.HeaderBar()
+        
+        # Filter controls box
+        filter_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=6)
+        
         self._filter_entry = Gtk.SearchEntry()
-        self._filter_entry.set_placeholder_text(_("Filter (protocol, IP, keyword)…"))
-        self._filter_entry.set_hexpand(True)
+        self._filter_entry.set_placeholder_text(_("BPF Filter (e.g., tcp port 80)…"))
+        self._filter_entry.set_size_request(300, -1)
         self._filter_entry.connect("activate", self._on_filter_activate)
+        filter_box.append(self._filter_entry)
+
+        # Filter presets dropdown
+        self._filter_combo = Gtk.ComboBoxText()
+        self._filter_combo.set_size_request(120, -1)
+        self._filter_combo.append_text(_("All packets"))
+        self._filter_combo.append_text("HTTP")
+        self._filter_combo.append_text("DNS") 
+        self._filter_combo.append_text("TLS")
+        self._filter_combo.append_text("TCP")
+        self._filter_combo.append_text("UDP")
+        self._filter_combo.append_text("ICMP")
+        self._filter_combo.set_active(0)
+        self._filter_combo.connect("changed", self._on_filter_preset_changed)
+        filter_box.append(self._filter_combo)
 
         open_btn = Gtk.Button(icon_name="document-open-symbolic")
         open_btn.set_tooltip_text(_("Open PCAP file"))
@@ -132,7 +158,7 @@ class PcapViewerWindow(Adw.ApplicationWindow):
         menu_btn = Gtk.MenuButton(icon_name="open-menu-symbolic", menu_model=menu)
 
         header.pack_start(open_btn)
-        header.set_title_widget(self._filter_entry)
+        header.set_title_widget(filter_box)
         header.pack_end(menu_btn)
         main_box.append(header)
 
@@ -150,8 +176,63 @@ class PcapViewerWindow(Adw.ApplicationWindow):
         empty.set_description(_("Open a .pcap or .pcapng file to begin analysis.\nYou can also drag and drop files here."))
         self._stack.add_named(empty, "empty")
 
-        # Content panes
+        # Content with tabbed interface
         content_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
+
+        # Create tabbed interface using Adw.ViewStack
+        self._view_switcher = Adw.ViewSwitcher()
+        self._view_switcher.set_policy(Adw.ViewSwitcherPolicy.WIDE)
+        content_box.append(self._view_switcher)
+
+        self._view_stack = Adw.ViewStack()
+        self._view_switcher.set_stack(self._view_stack)
+        
+        # Tab 1: Packets (existing functionality)
+        packets_page = self._create_packets_view()
+        self._view_stack.add_titled(packets_page, "packets", _("Packets"))
+
+        # Tab 2: Conversations
+        self._conversations_view = ConversationView()
+        self._view_stack.add_titled(self._conversations_view, "conversations", _("Conversations"))
+
+        # Tab 3: Protocol Statistics
+        self._protocol_stats_view = ProtocolStatsView()
+        self._view_stack.add_titled(self._protocol_stats_view, "protocol_stats", _("Protocol Stats"))
+
+        # Tab 4: DNS Analysis
+        self._dns_view = DNSAnalyzerView()
+        self._view_stack.add_titled(self._dns_view, "dns", _("DNS"))
+
+        # Tab 5: HTTP Analysis
+        self._http_view = HTTPAnalyzerView()
+        self._view_stack.add_titled(self._http_view, "http", _("HTTP"))
+
+        # Tab 6: TLS Analysis
+        self._tls_view = TLSAnalyzerView()
+        self._view_stack.add_titled(self._tls_view, "tls", _("TLS"))
+
+        # Tab 7: File Extraction
+        self._file_extractor_view = FileExtractorView()
+        self._view_stack.add_titled(self._file_extractor_view, "files", _("Files"))
+
+        # Tab 8: Timeline
+        self._timeline_view = TimelineView()
+        self._view_stack.add_titled(self._timeline_view, "timeline", _("Timeline"))
+
+        content_box.append(self._view_stack)
+        self._stack.add_named(content_box, "content")
+
+        self._toast_overlay.set_child(self._stack)
+        main_box.append(self._toast_overlay)
+
+        # Stats page
+        self._stats_window = None
+
+        self.set_content(main_box)
+
+    def _create_packets_view(self):
+        """Create the original packets view with details and hex."""
+        packets_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
 
         # Packet count bar
         self._status_label = Gtk.Label(label="")
@@ -160,7 +241,7 @@ class PcapViewerWindow(Adw.ApplicationWindow):
         self._status_label.set_margin_start(8)
         self._status_label.set_margin_top(4)
         self._status_label.set_margin_bottom(4)
-        content_box.append(self._status_label)
+        packets_box.append(self._status_label)
 
         paned_v1 = Gtk.Paned(orientation=Gtk.Orientation.VERTICAL)
         paned_v1.set_vexpand(True)
@@ -225,16 +306,8 @@ class PcapViewerWindow(Adw.ApplicationWindow):
         paned_v1.set_position(350)
         paned_v2.set_position(200)
 
-        content_box.append(paned_v1)
-        self._stack.add_named(content_box, "content")
-
-        self._toast_overlay.set_child(self._stack)
-        main_box.append(self._toast_overlay)
-
-        # Stats page
-        self._stats_window = None
-
-        self.set_content(main_box)
+        packets_box.append(paned_v1)
+        return packets_box
 
     def _setup_actions(self):
         about_action = Gio.SimpleAction.new("about", None)
@@ -341,6 +414,16 @@ class PcapViewerWindow(Adw.ApplicationWindow):
         self.set_title(f"{os.path.basename(filepath)} — {_('PCAP Viewer')}")
         self._current_page = 0
         self._populate_packets()
+        
+        # Update all analyzer views with new packet data
+        self._conversations_view.update_packets(self.pcap_file)
+        self._protocol_stats_view.update_packets(self.pcap_file)
+        self._dns_view.update_packets(self.pcap_file)
+        self._http_view.update_packets(self.pcap_file)
+        self._tls_view.update_packets(self.pcap_file)
+        self._file_extractor_view.update_packets(self.pcap_file)
+        self._timeline_view.update_packets(self.pcap_file)
+        
         self._stack.set_visible_child_name("content")
 
     def _on_load_error(self, msg):
@@ -372,6 +455,28 @@ class PcapViewerWindow(Adw.ApplicationWindow):
         self.pcap_file.apply_filter(text)
         self._current_page = 0
         self._populate_packets()
+
+    def _on_filter_preset_changed(self, combo):
+        """Handle filter preset selection."""
+        preset = combo.get_active_text()
+        
+        filter_map = {
+            _("All packets"): "",
+            "HTTP": "tcp port 80",
+            "DNS": "udp port 53", 
+            "TLS": "tcp port 443",
+            "TCP": "tcp",
+            "UDP": "udp", 
+            "ICMP": "icmp"
+        }
+        
+        filter_text = filter_map.get(preset, "")
+        self._filter_entry.set_text(filter_text)
+        
+        if filter_text or preset == _("All packets"):
+            self.pcap_file.apply_filter(filter_text)
+            self._current_page = 0
+            self._populate_packets()
 
     def _on_packet_selected(self, selection, pspec):
         pos = selection.get_selected()

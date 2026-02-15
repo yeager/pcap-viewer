@@ -3,29 +3,30 @@
 # Copyright (C) YEAR Daniel Nylander
 # This file is distributed under the same license as the pcap-viewer package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-# 
+#
 # #-#-#-#-#  desktop.pot (PACKAGE VERSION)  #-#-#-#-#
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-# 
+#
 # Translators:
 # Daniel Nylander <po@danielnylander.se>, 2026
-# 
+#
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-02-15 10:12+0100\n"
+"Report-Msgid-Bugs-To: daniel@danielnylander.se\n"
+"POT-Creation-Date: 2026-02-15 10:59+0100\n"
 "PO-Revision-Date: 2026-02-15 09:12+0000\n"
 "Last-Translator: Daniel Nylander <po@danielnylander.se>, 2026\n"
-"Language-Team: Swedish (https://app.transifex.com/danielnylander/teams/304807/sv/)\n"
+"Language-Team: Swedish (https://app.transifex.com/danielnylander/teams/"
+"304807/sv/)\n"
+"Language: sv\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: sv\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: src/pcap_viewer/main.py:102 src/pcap_viewer/main.py:341
@@ -41,7 +42,7 @@ msgstr "Filter (protokoll, IP, nyckelord)…"
 msgid "Open PCAP file"
 msgstr "Öppna PCAP-fil"
 
-#: src/pcap_viewer/main.py:130 src/pcap_viewer/main.py:421
+#: src/pcap_viewer/main.py:130 src/pcap_viewer/main.py:423
 msgid "Statistics"
 msgstr "Statistik"
 
@@ -86,23 +87,23 @@ msgstr "Fel: "
 msgid "{shown} of {total} packets"
 msgstr "{shown} av {total} paket"
 
-#: src/pcap_viewer/main.py:415
+#: src/pcap_viewer/main.py:417
 msgid "No capture loaded"
 msgstr "Ingen nätverksdump inläst"
 
-#: src/pcap_viewer/main.py:437
+#: src/pcap_viewer/main.py:439
 msgid "Protocol Distribution"
 msgstr "Protokolldistribution"
 
-#: src/pcap_viewer/main.py:442
+#: src/pcap_viewer/main.py:444
 msgid "Top Talkers"
 msgstr "Mest aktiva"
 
-#: src/pcap_viewer/main.py:447
+#: src/pcap_viewer/main.py:449
 msgid "Conversations"
 msgstr "Konversationer"
 
-#: src/pcap_viewer/main.py:453
+#: src/pcap_viewer/main.py:455
 msgid "DNS Queries"
 msgstr "DNS-förfrågningar"
 

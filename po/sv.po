@@ -18,7 +18,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: daniel@danielnylander.se\n"
-"POT-Creation-Date: 2026-02-15 10:59+0100\n"
+"POT-Creation-Date: 2026-02-15 12:52+0100\n"
 "PO-Revision-Date: 2026-02-15 09:12+0000\n"
 "Last-Translator: Daniel Nylander <po@danielnylander.se>, 2026\n"
 "Language-Team: Swedish (https://app.transifex.com/danielnylander/teams/"
@@ -29,32 +29,559 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: src/pcap_viewer/main.py:102 src/pcap_viewer/main.py:341
-#: src/pcap_viewer/main.py:400
+#: src/pcap_viewer/protocol_stats.py:96
+msgid "No data to display"
+msgstr ""
+
+#: src/pcap_viewer/protocol_stats.py:269
+msgid "Analyze Protocols"
+msgstr ""
+
+#: src/pcap_viewer/protocol_stats.py:276
+msgid "Chart type:"
+msgstr ""
+
+#: src/pcap_viewer/protocol_stats.py:280
+msgid "Pie Chart"
+msgstr ""
+
+#: src/pcap_viewer/protocol_stats.py:281
+msgid "Bar Chart"
+msgstr ""
+
+#: src/pcap_viewer/protocol_stats.py:288 src/pcap_viewer/protocol_stats.py:515
+msgid "No analysis performed yet"
+msgstr ""
+
+#: src/pcap_viewer/protocol_stats.py:300 src/pcap_viewer/protocol_stats.py:422
+#: src/pcap_viewer/protocol_stats.py:495 src/pcap_viewer/main.py:544
+msgid "Protocol Distribution"
+msgstr "Protokolldistribution"
+
+#: src/pcap_viewer/protocol_stats.py:313
+#, fuzzy
+msgid "Protocol Statistics"
+msgstr "Statistik"
+
+#: src/pcap_viewer/protocol_stats.py:322 src/pcap_viewer/file_extractor.py:107
+#: src/pcap_viewer/conversations.py:117 src/pcap_viewer/conversations.py:220
+#: src/pcap_viewer/conversations.py:238
+msgid "Protocol"
+msgstr ""
+
+#: src/pcap_viewer/protocol_stats.py:323 src/pcap_viewer/timeline.py:419
+#: src/pcap_viewer/timeline.py:473 src/pcap_viewer/main.py:192
+#: src/pcap_viewer/conversations.py:118 src/pcap_viewer/conversations.py:221
+msgid "Packets"
+msgstr ""
+
+#: src/pcap_viewer/protocol_stats.py:324 src/pcap_viewer/protocol_stats.py:355
+#: src/pcap_viewer/conversations.py:119 src/pcap_viewer/conversations.py:222
+msgid "Bytes"
+msgstr ""
+
+#: src/pcap_viewer/protocol_stats.py:325 src/pcap_viewer/protocol_stats.py:356
+msgid "%"
+msgstr ""
+
+#: src/pcap_viewer/protocol_stats.py:345 src/pcap_viewer/main.py:549
+msgid "Top Talkers"
+msgstr "Mest aktiva"
+
+#: src/pcap_viewer/protocol_stats.py:354
+msgid "IP Address"
+msgstr ""
+
+#: src/pcap_viewer/protocol_stats.py:502
+#, python-brace-format
+msgid "Analyzed {packets} packets, {protocols} protocols"
+msgstr ""
+
+#: src/pcap_viewer/timeline.py:150
+msgid "Bandwidth Over Time"
+msgstr ""
+
+#: src/pcap_viewer/timeline.py:150
+msgid "Packets Over Time"
+msgstr ""
+
+#: src/pcap_viewer/timeline.py:214
+msgid "No packet data to display"
+msgstr ""
+
+#: src/pcap_viewer/timeline.py:314
+msgid "packets"
+msgstr ""
+
+#: src/pcap_viewer/timeline.py:418 src/pcap_viewer/dns_analyzer.py:170
+#: src/pcap_viewer/http_analyzer.py:204
+msgid "Time"
+msgstr ""
+
+#: src/pcap_viewer/timeline.py:424 src/pcap_viewer/timeline.py:472
+msgid "Bandwidth"
+msgstr ""
+
+#: src/pcap_viewer/timeline.py:428
+msgid "Protocols:"
+msgstr ""
+
+#: src/pcap_viewer/timeline.py:461
+msgid "Generate Timeline"
+msgstr ""
+
+#: src/pcap_viewer/timeline.py:468
+msgid "View:"
+msgstr ""
+
+#: src/pcap_viewer/timeline.py:482
+msgid "Time bucket:"
+msgstr ""
+
+#: src/pcap_viewer/timeline.py:486
+msgid "0.1 seconds"
+msgstr ""
+
+#: src/pcap_viewer/timeline.py:487
+msgid "1 second"
+msgstr ""
+
+#: src/pcap_viewer/timeline.py:488
+msgid "10 seconds"
+msgstr ""
+
+#: src/pcap_viewer/timeline.py:489
+msgid "1 minute"
+msgstr ""
+
+#: src/pcap_viewer/timeline.py:496 src/pcap_viewer/timeline.py:630
+msgid "No timeline analysis performed yet"
+msgstr ""
+
+#: src/pcap_viewer/timeline.py:504
+msgid "Traffic Timeline"
+msgstr ""
+
+#: src/pcap_viewer/timeline.py:513
+#, fuzzy
+msgid "Timeline Statistics"
+msgstr "Statistik"
+
+#: src/pcap_viewer/timeline.py:578
+#, python-brace-format
+msgid "Timeline generated from {packets} packets over {duration:.1f}s"
+msgstr ""
+
+#: src/pcap_viewer/timeline.py:591 src/pcap_viewer/tls_analyzer.py:567
+#: src/pcap_viewer/dns_analyzer.py:458
+#, fuzzy
+msgid "Basic Statistics"
+msgstr "Statistik"
+
+#: src/pcap_viewer/timeline.py:592 src/pcap_viewer/conversations.py:223
+msgid "Duration"
+msgstr ""
+
+#: src/pcap_viewer/timeline.py:593
+msgid "Total Data"
+msgstr ""
+
+#: src/pcap_viewer/timeline.py:594
+msgid "Avg Bandwidth"
+msgstr ""
+
+#: src/pcap_viewer/timeline.py:595
+msgid "Traffic Spikes"
+msgstr ""
+
+#: src/pcap_viewer/timeline.py:601
+msgid "Top Protocols"
+msgstr ""
+
+#: src/pcap_viewer/tls_analyzer.py:162
+msgid "Analyze TLS"
+msgstr ""
+
+#: src/pcap_viewer/tls_analyzer.py:170 src/pcap_viewer/dns_analyzer.py:121
+#: src/pcap_viewer/http_analyzer.py:146
+msgid "Filter:"
+msgstr ""
+
+#: src/pcap_viewer/tls_analyzer.py:174
+msgid "Search SNI, subject..."
+msgstr ""
+
+#: src/pcap_viewer/tls_analyzer.py:180
+msgid "Issues only"
+msgstr ""
+
+#: src/pcap_viewer/tls_analyzer.py:186 src/pcap_viewer/tls_analyzer.py:600
+msgid "No TLS analysis performed yet"
+msgstr ""
+
+#: src/pcap_viewer/tls_analyzer.py:207 src/pcap_viewer/tls_analyzer.py:317
+#, fuzzy
+msgid "Connection"
+msgstr "Konversationer"
+
+#: src/pcap_viewer/tls_analyzer.py:208
+msgid "SNI"
+msgstr ""
+
+#: src/pcap_viewer/tls_analyzer.py:209 src/pcap_viewer/tls_analyzer.py:319
+msgid "TLS Version"
+msgstr ""
+
+#: src/pcap_viewer/tls_analyzer.py:210 src/pcap_viewer/tls_analyzer.py:320
+msgid "Cipher Suite"
+msgstr ""
+
+#: src/pcap_viewer/tls_analyzer.py:211 src/pcap_viewer/tls_analyzer.py:332
+msgid "Issues"
+msgstr ""
+
+#: src/pcap_viewer/tls_analyzer.py:230
+msgid "Connection Details"
+msgstr ""
+
+#: src/pcap_viewer/tls_analyzer.py:247
+#, fuzzy
+msgid "TLS Statistics"
+msgstr "Statistik"
+
+#: src/pcap_viewer/tls_analyzer.py:275
+msgid "None"
+msgstr ""
+
+#: src/pcap_viewer/tls_analyzer.py:318
+msgid "SNI (Server Name)"
+msgstr ""
+
+#: src/pcap_viewer/tls_analyzer.py:318
+msgid "Not available"
+msgstr ""
+
+#: src/pcap_viewer/tls_analyzer.py:319 src/pcap_viewer/tls_analyzer.py:320
+#: src/pcap_viewer/tls_analyzer.py:554
+msgid "Unknown"
+msgstr ""
+
+#: src/pcap_viewer/tls_analyzer.py:324
+msgid "Certificate Subject"
+msgstr ""
+
+#: src/pcap_viewer/tls_analyzer.py:326
+msgid "Certificate Issuer"
+msgstr ""
+
+#: src/pcap_viewer/tls_analyzer.py:328
+msgid "Certificate Expiry"
+msgstr ""
+
+#: src/pcap_viewer/tls_analyzer.py:373
+msgid "Weak TLS version"
+msgstr ""
+
+#: src/pcap_viewer/tls_analyzer.py:378
+msgid "Weak cipher"
+msgstr ""
+
+#: src/pcap_viewer/tls_analyzer.py:382
+msgid "Expired certificate"
+msgstr ""
+
+#: src/pcap_viewer/tls_analyzer.py:417
+#, python-brace-format
+msgid "{connections} TLS connections found"
+msgstr ""
+
+#: src/pcap_viewer/tls_analyzer.py:552
+msgid "Certificate present (parsing not implemented)"
+msgstr ""
+
+#: src/pcap_viewer/tls_analyzer.py:553
+msgid "See certificate details"
+msgstr ""
+
+#: src/pcap_viewer/tls_analyzer.py:568
+#, fuzzy
+msgid "Connections"
+msgstr "Konversationer"
+
+#: src/pcap_viewer/tls_analyzer.py:569
+msgid "With Issues"
+msgstr ""
+
+#: src/pcap_viewer/tls_analyzer.py:575
+msgid "TLS Versions"
+msgstr ""
+
+#: src/pcap_viewer/tls_analyzer.py:585
+msgid "Top Cipher Suites"
+msgstr ""
+
+#: src/pcap_viewer/dns_analyzer.py:113
+msgid "Analyze DNS"
+msgstr ""
+
+#: src/pcap_viewer/dns_analyzer.py:125
+msgid "Search domain names..."
+msgstr ""
+
+#: src/pcap_viewer/dns_analyzer.py:131
+msgid "Type:"
+msgstr ""
+
+#: src/pcap_viewer/dns_analyzer.py:135 src/pcap_viewer/dns_analyzer.py:249
+#: src/pcap_viewer/http_analyzer.py:160 src/pcap_viewer/http_analyzer.py:172
+#: src/pcap_viewer/http_analyzer.py:325 src/pcap_viewer/http_analyzer.py:330
+msgid "All"
+msgstr ""
+
+#: src/pcap_viewer/dns_analyzer.py:143
+#, fuzzy
+msgid "Errors only"
+msgstr "Fel: "
+
+#: src/pcap_viewer/dns_analyzer.py:149 src/pcap_viewer/dns_analyzer.py:492
+msgid "No DNS analysis performed yet"
+msgstr ""
+
+#: src/pcap_viewer/dns_analyzer.py:171 src/pcap_viewer/dns_analyzer.py:227
+msgid "Query"
+msgstr ""
+
+#: src/pcap_viewer/dns_analyzer.py:172
+msgid "Type"
+msgstr ""
+
+#: src/pcap_viewer/dns_analyzer.py:173 src/pcap_viewer/http_analyzer.py:252
+msgid "Response"
+msgstr ""
+
+#: src/pcap_viewer/dns_analyzer.py:174
+msgid "TTL"
+msgstr ""
+
+#: src/pcap_viewer/dns_analyzer.py:175 src/pcap_viewer/http_analyzer.py:208
+#, fuzzy
+msgid "Status"
+msgstr "Statistik"
+
+#: src/pcap_viewer/dns_analyzer.py:194
+#, fuzzy
+msgid "DNS Statistics"
+msgstr "Statistik"
+
+#: src/pcap_viewer/dns_analyzer.py:229
+msgid "OK"
+msgstr ""
+
+#: src/pcap_viewer/dns_analyzer.py:447
+#, python-brace-format
+msgid "{records} DNS records analyzed"
+msgstr ""
+
+#: src/pcap_viewer/dns_analyzer.py:459
+#, fuzzy
+msgid "Queries"
+msgstr "DNS-förfrågningar"
+
+#: src/pcap_viewer/dns_analyzer.py:460
+msgid "Responses"
+msgstr ""
+
+#: src/pcap_viewer/dns_analyzer.py:461
+#, fuzzy
+msgid "Errors"
+msgstr "Fel: "
+
+#: src/pcap_viewer/dns_analyzer.py:467
+msgid "Top Record Types"
+msgstr ""
+
+#: src/pcap_viewer/dns_analyzer.py:477
+msgid "Top Domains"
+msgstr ""
+
+#: src/pcap_viewer/file_extractor.py:80
+msgid "Extract Files"
+msgstr ""
+
+#: src/pcap_viewer/file_extractor.py:85
+msgid "Save All"
+msgstr ""
+
+#: src/pcap_viewer/file_extractor.py:90 src/pcap_viewer/file_extractor.py:434
+msgid "No files extracted yet"
+msgstr ""
+
+#: src/pcap_viewer/file_extractor.py:105
+msgid "Filename"
+msgstr ""
+
+#: src/pcap_viewer/file_extractor.py:106 src/pcap_viewer/http_analyzer.py:210
+msgid "Size"
+msgstr ""
+
+#: src/pcap_viewer/file_extractor.py:108
+msgid "MIME Type"
+msgstr ""
+
+#: src/pcap_viewer/file_extractor.py:109 src/pcap_viewer/conversations.py:237
+msgid "Stream"
+msgstr ""
+
+#: src/pcap_viewer/file_extractor.py:130
+msgid "Save Selected"
+msgstr ""
+
+#: src/pcap_viewer/file_extractor.py:175
+msgid "Select Directory to Save Files"
+msgstr ""
+
+#: src/pcap_viewer/file_extractor.py:186
+msgid "Save File As"
+msgstr ""
+
+#: src/pcap_viewer/file_extractor.py:255
+#, python-brace-format
+msgid "{count} files extracted"
+msgstr ""
+
+#: src/pcap_viewer/http_analyzer.py:20
+msgid "Informational"
+msgstr ""
+
+#: src/pcap_viewer/http_analyzer.py:21
+msgid "Success"
+msgstr ""
+
+#: src/pcap_viewer/http_analyzer.py:22
+msgid "Redirection"
+msgstr ""
+
+#: src/pcap_viewer/http_analyzer.py:23
+msgid "Client Error"
+msgstr ""
+
+#: src/pcap_viewer/http_analyzer.py:24
+msgid "Server Error"
+msgstr ""
+
+#: src/pcap_viewer/http_analyzer.py:138
+msgid "Analyze HTTP"
+msgstr ""
+
+#: src/pcap_viewer/http_analyzer.py:150
+msgid "Search URLs, hosts..."
+msgstr ""
+
+#: src/pcap_viewer/http_analyzer.py:156
+msgid "Method:"
+msgstr ""
+
+#: src/pcap_viewer/http_analyzer.py:168
+msgid "Status:"
+msgstr ""
+
+#: src/pcap_viewer/http_analyzer.py:173 src/pcap_viewer/http_analyzer.py:332
+msgid "2xx Success"
+msgstr ""
+
+#: src/pcap_viewer/http_analyzer.py:174 src/pcap_viewer/http_analyzer.py:334
+msgid "3xx Redirect"
+msgstr ""
+
+#: src/pcap_viewer/http_analyzer.py:175 src/pcap_viewer/http_analyzer.py:336
+msgid "4xx Client Error"
+msgstr ""
+
+#: src/pcap_viewer/http_analyzer.py:176 src/pcap_viewer/http_analyzer.py:338
+msgid "5xx Server Error"
+msgstr ""
+
+#: src/pcap_viewer/http_analyzer.py:183 src/pcap_viewer/http_analyzer.py:620
+msgid "No HTTP analysis performed yet"
+msgstr ""
+
+#: src/pcap_viewer/http_analyzer.py:205
+msgid "Method"
+msgstr ""
+
+#: src/pcap_viewer/http_analyzer.py:206
+msgid "Host"
+msgstr ""
+
+#: src/pcap_viewer/http_analyzer.py:207
+msgid "URL"
+msgstr ""
+
+#: src/pcap_viewer/http_analyzer.py:209
+msgid "Content-Type"
+msgstr ""
+
+#: src/pcap_viewer/http_analyzer.py:240
+msgid "Request"
+msgstr ""
+
+#: src/pcap_viewer/http_analyzer.py:264
+msgid "Headers"
+msgstr ""
+
+#: src/pcap_viewer/http_analyzer.py:406
+msgid "No response captured"
+msgstr ""
+
+#: src/pcap_viewer/http_analyzer.py:414
+msgid "REQUEST HEADERS:"
+msgstr ""
+
+#: src/pcap_viewer/http_analyzer.py:420
+msgid "RESPONSE HEADERS:"
+msgstr ""
+
+#: src/pcap_viewer/http_analyzer.py:493
+msgid "Select a transaction to view details"
+msgstr ""
+
+#: src/pcap_viewer/http_analyzer.py:497
+#, python-brace-format
+msgid "{transactions} HTTP transactions found"
+msgstr ""
+
+#: src/pcap_viewer/main.py:109 src/pcap_viewer/main.py:414
+#: src/pcap_viewer/main.py:505
 msgid "PCAP Viewer"
 msgstr "PCAP-visare"
 
-#: src/pcap_viewer/main.py:120
-msgid "Filter (protocol, IP, keyword)…"
-msgstr "Filter (protokoll, IP, nyckelord)…"
+#: src/pcap_viewer/main.py:131
+msgid "BPF Filter (e.g., tcp port 80)…"
+msgstr ""
 
-#: src/pcap_viewer/main.py:125
+#: src/pcap_viewer/main.py:139 src/pcap_viewer/main.py:464
+#: src/pcap_viewer/main.py:476
+#, fuzzy
+msgid "All packets"
+msgstr "Alla filer"
+
+#: src/pcap_viewer/main.py:151
 msgid "Open PCAP file"
 msgstr "Öppna PCAP-fil"
 
-#: src/pcap_viewer/main.py:130 src/pcap_viewer/main.py:423
+#: src/pcap_viewer/main.py:156 src/pcap_viewer/main.py:528
 msgid "Statistics"
 msgstr "Statistik"
 
-#: src/pcap_viewer/main.py:131
+#: src/pcap_viewer/main.py:157
 msgid "About"
 msgstr "Om"
 
-#: src/pcap_viewer/main.py:149
+#: src/pcap_viewer/main.py:175
 msgid "No Capture Loaded"
 msgstr "Ingen nätverksdump inläst"
 
-#: src/pcap_viewer/main.py:150
+#: src/pcap_viewer/main.py:176
 msgid ""
 "Open a .pcap or .pcapng file to begin analysis.\n"
 "You can also drag and drop files here."
@@ -62,51 +589,109 @@ msgstr ""
 "Öppna en .pcap- eller .pcapng-fil för att påbörja analysen.\n"
 "Du kan också dra och släppa filer här."
 
-#: src/pcap_viewer/main.py:303
+#: src/pcap_viewer/main.py:196 src/pcap_viewer/main.py:554
+msgid "Conversations"
+msgstr "Konversationer"
+
+#: src/pcap_viewer/main.py:200
+#, fuzzy
+msgid "Protocol Stats"
+msgstr "Protokolldistribution"
+
+#: src/pcap_viewer/main.py:204
+msgid "DNS"
+msgstr ""
+
+#: src/pcap_viewer/main.py:208
+msgid "HTTP"
+msgstr ""
+
+#: src/pcap_viewer/main.py:212
+msgid "TLS"
+msgstr ""
+
+#: src/pcap_viewer/main.py:216
+msgid "Files"
+msgstr ""
+
+#: src/pcap_viewer/main.py:220
+msgid "Timeline"
+msgstr ""
+
+#: src/pcap_viewer/main.py:376
 msgid "Open PCAP File"
 msgstr "Öppna PCAP-fil"
 
-#: src/pcap_viewer/main.py:305
+#: src/pcap_viewer/main.py:378
 msgid "PCAP files"
 msgstr "PCAP-filer"
 
-#: src/pcap_viewer/main.py:312
+#: src/pcap_viewer/main.py:385
 msgid "All files"
 msgstr "Alla filer"
 
-#: src/pcap_viewer/main.py:328
+#: src/pcap_viewer/main.py:401
 msgid "Loading…"
 msgstr "Läser in…"
 
-#: src/pcap_viewer/main.py:347
+#: src/pcap_viewer/main.py:430
 msgid "Error: "
 msgstr "Fel: "
 
-#: src/pcap_viewer/main.py:367
+#: src/pcap_viewer/main.py:450
 #, python-brace-format
 msgid "{shown} of {total} packets"
 msgstr "{shown} av {total} paket"
 
-#: src/pcap_viewer/main.py:417
+#: src/pcap_viewer/main.py:522
 msgid "No capture loaded"
 msgstr "Ingen nätverksdump inläst"
 
-#: src/pcap_viewer/main.py:439
-msgid "Protocol Distribution"
-msgstr "Protokolldistribution"
-
-#: src/pcap_viewer/main.py:444
-msgid "Top Talkers"
-msgstr "Mest aktiva"
-
-#: src/pcap_viewer/main.py:449
-msgid "Conversations"
-msgstr "Konversationer"
-
-#: src/pcap_viewer/main.py:455
+#: src/pcap_viewer/main.py:560
 msgid "DNS Queries"
 msgstr "DNS-förfrågningar"
 
-#: data/se.danielnylander.pcap-viewer.desktop.in:11
-msgid "pcap;network;packet;capture;sniffer;"
-msgstr "pcap;nätverk;paket;fångst;nätverksdump;sniffer;"
+#: src/pcap_viewer/conversations.py:96
+#, fuzzy
+msgid "Analyze Conversations"
+msgstr "Konversationer"
+
+#: src/pcap_viewer/conversations.py:101 src/pcap_viewer/conversations.py:380
+msgid "No conversations analyzed yet"
+msgstr ""
+
+#: src/pcap_viewer/conversations.py:116 src/pcap_viewer/conversations.py:219
+#, fuzzy
+msgid "Conversation"
+msgstr "Konversationer"
+
+#: src/pcap_viewer/conversations.py:120
+msgid "Duration (s)"
+msgstr ""
+
+#: src/pcap_viewer/conversations.py:138
+msgid "Stream Data"
+msgstr ""
+
+#: src/pcap_viewer/conversations.py:159
+msgid "Follow Stream"
+msgstr ""
+
+#: src/pcap_viewer/conversations.py:225
+msgid "Click 'Follow Stream' to see full conversation data"
+msgstr ""
+
+#: src/pcap_viewer/conversations.py:367
+#, fuzzy, python-brace-format
+msgid "{count} conversations found"
+msgstr "Konversationer"
+
+#: src/pcap_viewer/conversations.py:371
+msgid "Select a conversation to view details"
+msgstr ""
+
+#~ msgid "Filter (protocol, IP, keyword)…"
+#~ msgstr "Filter (protokoll, IP, nyckelord)…"
+
+#~ msgid "pcap;network;packet;capture;sniffer;"
+#~ msgstr "pcap;nätverk;paket;fångst;nätverksdump;sniffer;"

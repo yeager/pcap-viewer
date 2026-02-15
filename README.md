@@ -1,8 +1,6 @@
 # PCAP Viewer
 
-A GTK4/Adwaita application for analyzing network packet captures (.pcap/.pcapng files) on Linux.
-
-![Screenshot](docs/screenshot.png)
+A GTK4/Adwaita application for analyzing pcap/pcapng network captures.
 
 ## Features
 
@@ -12,46 +10,55 @@ A GTK4/Adwaita application for analyzing network packet captures (.pcap/.pcapng 
 - Display filter by protocol, IP address, or keyword
 - Protocol statistics, top talkers, conversation analysis
 - Drag-and-drop file loading
-- Internationalized (gettext-based, Transifex translations)
+- Internationalized (gettext-based)
 
-## Install
+## Installation
 
-### From PyPI
+### Debian/Ubuntu
 
 ```bash
-pip install pcap-viewer
+# Add repository
+curl -fsSL https://yeager.github.io/debian-repo/KEY.gpg | sudo gpg --dearmor -o /usr/share/keyrings/yeager-archive-keyring.gpg
+echo "deb [signed-by=/usr/share/keyrings/yeager-archive-keyring.gpg] https://yeager.github.io/debian-repo stable main" | sudo tee /etc/apt/sources.list.d/yeager.list
+sudo apt update
+sudo apt install pcap-viewer
 ```
 
-### From Debian repository
+### Fedora/RHEL
 
 ```bash
-curl -fsSL https://yeager.github.io/debian-repo/pub.gpg | sudo gpg --dearmor -o /usr/share/keyrings/yeager.gpg
-echo "deb [signed-by=/usr/share/keyrings/yeager.gpg] https://yeager.github.io/debian-repo stable main" | sudo tee /etc/apt/sources.list.d/yeager.list
-sudo apt update && sudo apt install pcap-viewer
+sudo dnf config-manager --add-repo https://yeager.github.io/rpm-repo/yeager.repo
+sudo dnf install pcap-viewer
 ```
 
 ### From source
 
 ```bash
-git clone https://github.com/yeager/pcap-viewer.git
-cd pcap-viewer
 pip install .
-```
-
-## Usage
-
-```bash
 pcap-viewer
-# or open a file directly:
-pcap-viewer capture.pcap
 ```
 
-## Requirements
+## 🌍 Contributing Translations
 
-- Python 3.10+
-- GTK 4, libadwaita
-- Scapy
+Help translate this app into your language! All translations are managed via Transifex.
+
+**→ [Translate on Transifex](https://app.transifex.com/danielnylander/pcap-viewer/)**
+
+### How to contribute:
+1. Visit the [Transifex project page](https://app.transifex.com/danielnylander/pcap-viewer/)
+2. Create a free account (or log in)
+3. Select your language and start translating
+
+### Currently supported languages:
+Arabic, Czech, Danish, German, Spanish, Finnish, French, Italian, Japanese, Korean, Norwegian Bokmål, Dutch, Polish, Brazilian Portuguese, Russian, Swedish, Ukrainian, Chinese (Simplified)
+
+### Notes:
+- Please do **not** submit pull requests with .po file changes — they are synced automatically from Transifex
+- Source strings are pushed to Transifex daily via GitHub Actions
+- Translations are pulled back and included in releases
+
+New language? Open an [issue](https://github.com/yeager/pcap-viewer/issues) and we'll add it!
 
 ## License
 
-GPL-3.0-or-later — see [LICENSE](LICENSE).
+GPL-3.0-or-later — Daniel Nylander <daniel@danielnylander.se>

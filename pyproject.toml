@@ -3,9 +3,9 @@ requires = ["setuptools>=68.0", "setuptools-scm"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "pcap-viewer"
-version = "0.1.2"
-description = "GTK4/Adwaita application for analyzing network packet captures"
+name = "packetlens"
+version = "0.2.0"
+description = "PacketLens — GTK4 network capture analyzer with file extraction, protocol stats, DNS/TLS/HTTP analysis"
 readme = "README.md"
 license = "GPL-3.0-or-later"
 requires-python = ">=3.10"
@@ -32,6 +32,7 @@ Homepage = "https://github.com/yeager/pcap-viewer"
 Issues = "https://github.com/yeager/pcap-viewer/issues"
 
 [project.gui-scripts]
+packetlens = "pcap_viewer.main:main"
 pcap-viewer = "pcap_viewer.main:main"
 
 [tool.setuptools.packages.find]

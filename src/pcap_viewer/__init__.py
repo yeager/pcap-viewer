@@ -1,3 +1,4 @@
-"""PCAP Viewer - Network capture analyzer for Linux."""
+"""PacketLens - Network capture analyzer for Linux."""
 
-__version__ = "0.1.2"
+__version__ = "0.2.0"
+__app_id__ = "se.danielnylander.packetlens"

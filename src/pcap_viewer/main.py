@@ -1,4 +1,4 @@
-"""PCAP Viewer - GTK4/Adwaita application for analyzing network captures."""
+"""PacketLens - GTK4/Adwaita application for analyzing network captures."""
 
 import sys
 import os
@@ -26,11 +26,11 @@ from .timeline import TimelineView
 LOCALE_DIR = os.path.join(os.path.dirname(__file__), "..", "..", "po")
 if not os.path.isdir(LOCALE_DIR):
     LOCALE_DIR = "/usr/share/locale"
-gettext.bindtextdomain("pcap-viewer", LOCALE_DIR)
-gettext.textdomain("pcap-viewer")
+gettext.bindtextdomain("packetlens", LOCALE_DIR)
+gettext.textdomain("packetlens")
 _ = gettext.gettext
 
-APP_ID = "se.danielnylander.pcap-viewer"
+APP_ID = "se.danielnylander.packetlens"
 
 
 class PacketObject(GObject.Object):
@@ -106,7 +106,7 @@ class PcapViewerWindow(Adw.ApplicationWindow):
 
     def __init__(self, app):
         super().__init__(application=app)
-        self.set_title(_("PCAP Viewer"))
+        self.set_title(_("PacketLens"))
         self.set_default_size(1200, 800)
         self.set_size_request(800, 500)
 
@@ -411,7 +411,7 @@ class PcapViewerWindow(Adw.ApplicationWindow):
         thread.start()
 
     def _on_file_loaded(self, filepath):
-        self.set_title(f"{os.path.basename(filepath)} — {_('PCAP Viewer')}")
+        self.set_title(f"{os.path.basename(filepath)} — {_('PacketLens')}")
         self._current_page = 0
         self._populate_packets()
         
@@ -502,7 +502,7 @@ class PcapViewerWindow(Adw.ApplicationWindow):
 
     def _on_about(self, action, param):
         about = Adw.AboutWindow(
-            application_name=_("PCAP Viewer"),
+            application_name=_("PacketLens"),
             application_icon="network-wired-symbolic",
             version=__version__,
             developer_name="Daniel Nylander",
@@ -511,7 +511,7 @@ class PcapViewerWindow(Adw.ApplicationWindow):
             license_type=Gtk.License.GPL_3_0,
             website="https://github.com/yeager/pcap-viewer",
             issue_url="https://github.com/yeager/pcap-viewer/issues",
-            translate_url="https://app.transifex.com/danielnylander/pcap-viewer/",
+            translate_url="https://app.transifex.com/danielnylander/packetlens/",
             translator_credits="Daniel Nylander <daniel@danielnylander.se>",
             transient_for=self,
         )

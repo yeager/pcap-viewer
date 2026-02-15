@@ -1,0 +1,11 @@
+[Desktop Entry]
+Type=Application
+_Name=PacketLens
+_Comment=Analyze network packet captures
+_GenericName=Network Packet Analyzer
+Exec=packetlens %f
+Icon=se.danielnylander.packetlens
+Terminal=false
+MimeType=application/vnd.tcpdump.pcap;application/x-pcapng;
+Categories=Network;Development;
+Keywords=pcap;network;packet;capture;sniffer;packetlens;

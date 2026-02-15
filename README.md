@@ -1,16 +1,21 @@
-# PCAP Viewer
+# PacketLens
 
-A GTK4/Adwaita application for analyzing pcap/pcapng network captures.
+A comprehensive GTK4/Adwaita network analysis suite for pcap/pcapng captures with advanced protocol analysis, file extraction, and security features.
 
 ## Features
 
-- Open and browse .pcap and .pcapng files
-- Three-pane Wireshark-style layout: packet list, protocol layers, hex dump
-- Protocol detection (TCP, UDP, DNS, HTTP, TLS, ICMP, ARP, …)
-- Display filter by protocol, IP address, or keyword
-- Protocol statistics, top talkers, conversation analysis
-- Drag-and-drop file loading
-- Internationalized (gettext-based)
+- **Multi-tab Analysis Interface**: Comprehensive packet analysis across specialized views
+- **Packet Browser**: Three-pane Wireshark-style layout with packet list, protocol layers, and hex dump
+- **Protocol Statistics**: Detailed breakdown of network protocols and traffic patterns
+- **Conversation Analysis**: Track network flows between endpoints with statistics
+- **DNS Analysis**: DNS query/response analysis, domain tracking, and DNS-over-HTTPS detection
+- **HTTP Analysis**: HTTP request/response extraction, header analysis, and content inspection
+- **TLS Analysis**: Certificate inspection, cipher suite analysis, and security assessment
+- **File Extraction**: Extract files from HTTP/FTP transfers and email attachments
+- **Timeline View**: Chronological visualization of network events
+- **Advanced Filtering**: BPF filters with preset combinations
+- **Drag-and-Drop**: Easy file loading interface
+- **Internationalized**: Multi-language support via gettext
 
 ## Installation
 
@@ -21,21 +26,21 @@ A GTK4/Adwaita application for analyzing pcap/pcapng network captures.
 curl -fsSL https://yeager.github.io/debian-repo/KEY.gpg | sudo gpg --dearmor -o /usr/share/keyrings/yeager-archive-keyring.gpg
 echo "deb [signed-by=/usr/share/keyrings/yeager-archive-keyring.gpg] https://yeager.github.io/debian-repo stable main" | sudo tee /etc/apt/sources.list.d/yeager.list
 sudo apt update
-sudo apt install pcap-viewer
+sudo apt install packetlens
 ```
 
 ### Fedora/RHEL
 
 ```bash
 sudo dnf config-manager --add-repo https://yeager.github.io/rpm-repo/yeager.repo
-sudo dnf install pcap-viewer
+sudo dnf install packetlens
 ```
 
 ### From source
 
 ```bash
 pip install .
-pcap-viewer
+packetlens
 ```
 
 ## 🌍 Contributing Translations

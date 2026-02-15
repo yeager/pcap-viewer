@@ -154,6 +154,7 @@ class PcapViewerWindow(Adw.ApplicationWindow):
         # Hamburger menu
         menu = Gio.Menu()
         menu.append(_("Statistics"), "win.show-stats")
+        menu.append(_("Preferences"), "win.preferences")
         menu.append(_("About"), "win.about")
         menu_btn = Gtk.MenuButton(icon_name="open-menu-symbolic", menu_model=menu)
 
@@ -317,6 +318,10 @@ class PcapViewerWindow(Adw.ApplicationWindow):
         stats_action = Gio.SimpleAction.new("show-stats", None)
         stats_action.connect("activate", self._on_show_stats)
         self.add_action(stats_action)
+
+        prefs_action = Gio.SimpleAction.new("preferences", None)
+        prefs_action.connect("activate", self._on_preferences)
+        self.add_action(prefs_action)
 
     def _setup_drag_drop(self):
         drop = Gtk.DropTarget.new(Gio.File, Gdk.DragAction.COPY)
@@ -499,6 +504,63 @@ class PcapViewerWindow(Adw.ApplicationWindow):
         for layer_name, fields in layers:
             children = [LayerObject(label=f"{fname}: {fval}") for fname, fval in fields]
             self._layer_store.append(LayerObject(label=layer_name, children=children))
+
+    def _on_preferences(self, action, param):
+        """Show preferences window."""
+        prefs = Adw.PreferencesWindow(transient_for=self)
+        prefs.set_title(_("Preferences"))
+
+        # Display page
+        display_page = Adw.PreferencesPage(title=_("Display"), icon_name="preferences-desktop-display-symbolic")
+
+        general_group = Adw.PreferencesGroup(title=_("General"))
+
+        # Theme
+        theme_row = Adw.ComboRow(title=_("Color Scheme"))
+        theme_store = Gtk.StringList()
+        for label in [_("Follow System"), _("Light"), _("Dark")]:
+            theme_store.append(label)
+        theme_row.set_model(theme_store)
+        sm = Adw.StyleManager.get_default()
+        scheme = sm.get_color_scheme()
+        if scheme == Adw.ColorScheme.FORCE_LIGHT:
+            theme_row.set_selected(1)
+        elif scheme == Adw.ColorScheme.FORCE_DARK:
+            theme_row.set_selected(2)
+        else:
+            theme_row.set_selected(0)
+
+        def on_theme_changed(row, _pspec):
+            idx = row.get_selected()
+            schemes = [Adw.ColorScheme.DEFAULT, Adw.ColorScheme.FORCE_LIGHT, Adw.ColorScheme.FORCE_DARK]
+            sm.set_color_scheme(schemes[idx])
+
+        theme_row.connect("notify::selected", on_theme_changed)
+        general_group.add(theme_row)
+
+        # Max packets to display
+        max_row = Adw.SpinRow.new_with_range(100, 100000, 100)
+        max_row.set_title(_("Max packets to display"))
+        max_row.set_value(10000)
+        general_group.add(max_row)
+
+        display_page.add(general_group)
+
+        # Network page
+        network_page = Adw.PreferencesPage(title=_("Network"), icon_name="network-wired-symbolic")
+
+        resolve_group = Adw.PreferencesGroup(title=_("Name Resolution"))
+
+        dns_row = Adw.SwitchRow(title=_("Resolve DNS names"))
+        dns_row.set_subtitle(_("Look up hostnames for IP addresses"))
+        dns_row.set_active(False)
+        resolve_group.add(dns_row)
+
+        network_page.add(resolve_group)
+
+        prefs.add(display_page)
+        prefs.add(network_page)
+        prefs.present()
 
     def _on_about(self, action, param):
         about = Adw.AboutWindow(

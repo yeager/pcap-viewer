@@ -1,19 +1,17 @@
 # PacketLens translation template.
 # Copyright (C) 2026 Daniel Nylander
-# This file is distributed under the same license as the packetlens package.
-# 
 # Translators:
 # Daniel Nylander <po@danielnylander.se>, 2026
 # 
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: packetlens 0.2.1\n"
+"Project-Id-Version: packetlens 0.2.2\n"
 "Report-Msgid-Bugs-To: daniel@danielnylander.se\n"
-"POT-Creation-Date: 2026-02-15 14:00+0100\n"
-"PO-Revision-Date: 2026-02-15 12:30+0000\n"
+"POT-Creation-Date: 2026-02-15 15:30+0100\n"
+"PO-Revision-Date: 2026-02-15 14:39+0000\n"
 "Last-Translator: Daniel Nylander <po@danielnylander.se>, 2026\n"
-"Language-Team: Swedish (https://app.transifex.com/danielnylander/teams/304807/sv/)\n"
+"Language-Team: Swedish (https://app.transifex.com/danielnylander/teams/304814/sv/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -389,6 +387,9 @@ msgstr "Öppna PCAP-fil"
 msgid "Statistics"
 msgstr "Statistik"
 
+msgid "Preferences"
+msgstr ""
+
 msgid "About"
 msgstr "Om"
 
@@ -440,6 +441,39 @@ msgstr "Fel: "
 
 msgid "{shown} of {total} packets"
 msgstr "{shown} av {total} paket"
+
+msgid "Display"
+msgstr ""
+
+msgid "General"
+msgstr ""
+
+msgid "Color Scheme"
+msgstr ""
+
+msgid "Follow System"
+msgstr ""
+
+msgid "Light"
+msgstr ""
+
+msgid "Dark"
+msgstr ""
+
+msgid "Max packets to display"
+msgstr ""
+
+msgid "Network"
+msgstr ""
+
+msgid "Name Resolution"
+msgstr ""
+
+msgid "Resolve DNS names"
+msgstr ""
+
+msgid "Look up hostnames for IP addresses"
+msgstr ""
 
 msgid "No capture loaded"
 msgstr "Ingen nätverksdump inläst"

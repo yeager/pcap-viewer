@@ -7,17 +7,31 @@ import magic
 import base64
 import binascii
 from collections import defaultdict
+from io import BytesIO
 
 import gi
 gi.require_version("Gtk", "4.0")
 gi.require_version("Adw", "1")
-from gi.repository import Gtk, Adw, Gio, GObject, Pango
+gi.require_version("GdkPixbuf", "2.0")
+from gi.repository import Gtk, Adw, Gio, GObject, Pango, GdkPixbuf, GLib
 
 from scapy.all import TCP, UDP, Raw, IP
 
 from .pcap_parser import get_protocol_name
 
 _ = gettext.gettext
+
+# Image MIME types we can preview
+IMAGE_MIME_TYPES = {
+    'image/png', 'image/jpeg', 'image/gif', 'image/bmp', 
+    'image/svg+xml', 'image/webp', 'image/tiff'
+}
+
+# Text MIME types we can preview  
+TEXT_MIME_TYPES = {
+    'text/plain', 'text/html', 'text/xml', 'text/css', 
+    'text/javascript', 'application/json', 'application/xml'
+}
 
 
 class FileObject(GObject.Object):
@@ -33,6 +47,8 @@ class FileObject(GObject.Object):
         self._mime_type = mime_type
         self._stream_id = stream_id
         self._data = data
+        self._thumbnail = None
+        self._is_previewable = self._check_previewable()
 
     @GObject.Property(type=str)
     def filename(self):
@@ -54,9 +70,281 @@ class FileObject(GObject.Object):
     def stream_id(self):
         return self._stream_id
 
+    @GObject.Property(type=bool)
+    def is_previewable(self):
+        return self._is_previewable
+
     @property
     def data(self):
         return self._data
+
+    @property
+    def thumbnail(self):
+        if self._thumbnail is None and self.is_image():
+            self._thumbnail = self._create_thumbnail()
+        return self._thumbnail
+
+    def is_image(self):
+        """Check if file is an image."""
+        return self._mime_type in IMAGE_MIME_TYPES
+
+    def is_text(self):
+        """Check if file is text."""
+        return self._mime_type in TEXT_MIME_TYPES
+
+    def _check_previewable(self):
+        """Check if file can be previewed."""
+        return self.is_image() or self.is_text()
+
+    def _create_thumbnail(self):
+        """Create a thumbnail pixbuf from image data."""
+        if not self.is_image() or not self._data:
+            return None
+            
+        try:
+            # Create input stream from data
+            stream = Gio.MemoryInputStream.new_from_data(self._data)
+            
+            # Load pixbuf from stream
+            pixbuf = GdkPixbuf.Pixbuf.new_from_stream(stream, None)
+            if pixbuf:
+                # Scale to thumbnail size (48x48 max, preserve aspect ratio)
+                width = pixbuf.get_width()
+                height = pixbuf.get_height()
+                
+                if width > height:
+                    new_width = min(48, width)
+                    new_height = int(height * new_width / width)
+                else:
+                    new_height = min(48, height)
+                    new_width = int(width * new_height / height)
+                
+                thumbnail = pixbuf.scale_simple(new_width, new_height, GdkPixbuf.InterpType.BILINEAR)
+                return thumbnail
+        except Exception as e:
+            print(f"Error creating thumbnail: {e}")
+            
+        return None
+
+
+class FilePreviewDialog(Adw.Window):
+    """Dialog for previewing extracted files."""
+
+    def __init__(self, file_obj, parent=None):
+        super().__init__(transient_for=parent)
+        self._file_obj = file_obj
+        self.set_title(f"{_('Preview')} - {file_obj.filename}")
+        self.set_default_size(600, 500)
+        self.set_modal(True)
+
+        self._build_ui()
+
+    def _build_ui(self):
+        main_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
+
+        # Header bar
+        header = Adw.HeaderBar()
+        
+        # Save button
+        save_btn = Gtk.Button(label=_("Save"))
+        save_btn.add_css_class("suggested-action")
+        save_btn.connect("clicked", self._on_save_clicked)
+        header.pack_end(save_btn)
+        
+        main_box.append(header)
+
+        # Content area
+        if self._file_obj.is_image():
+            content = self._create_image_preview()
+        elif self._file_obj.is_text():
+            content = self._create_text_preview()
+        else:
+            content = self._create_generic_preview()
+
+        main_box.append(content)
+        self.set_content(main_box)
+
+    def _create_image_preview(self):
+        """Create image preview with metadata."""
+        box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=12)
+        box.set_margin_top(12)
+        box.set_margin_bottom(12)
+        box.set_margin_start(12)
+        box.set_margin_end(12)
+
+        try:
+            # Create input stream from data
+            stream = Gio.MemoryInputStream.new_from_data(self._file_obj.data)
+            
+            # Load pixbuf from stream
+            pixbuf = GdkPixbuf.Pixbuf.new_from_stream(stream, None)
+            
+            if pixbuf:
+                # Image display
+                picture = Gtk.Picture.new_for_pixbuf(pixbuf)
+                picture.set_can_shrink(True)
+                picture.set_content_fit(Gtk.ContentFit.CONTAIN)
+                picture.set_vexpand(True)
+                
+                scroll = Gtk.ScrolledWindow()
+                scroll.set_child(picture)
+                scroll.set_vexpand(True)
+                box.append(scroll)
+
+                # Metadata
+                meta_frame = Gtk.Frame()
+                meta_frame.set_label(_("Image Information"))
+                
+                meta_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6)
+                meta_box.set_margin_top(12)
+                meta_box.set_margin_bottom(12)
+                meta_box.set_margin_start(12)
+                meta_box.set_margin_end(12)
+                
+                # Image dimensions and info
+                width = pixbuf.get_width()
+                height = pixbuf.get_height()
+                
+                info_labels = [
+                    f"{_('Filename')}: {self._file_obj.filename}",
+                    f"{_('Dimensions')}: {width} × {height} pixels",
+                    f"{_('Format')}: {self._file_obj.mime_type}",
+                    f"{_('File Size')}: {self._format_size(self._file_obj.size)}",
+                    f"{_('Protocol')}: {self._file_obj.protocol}"
+                ]
+                
+                for info in info_labels:
+                    label = Gtk.Label(label=info)
+                    label.set_halign(Gtk.Align.START)
+                    meta_box.append(label)
+                
+                meta_frame.set_child(meta_box)
+                box.append(meta_frame)
+            else:
+                # Failed to load image
+                error_label = Gtk.Label(label=_("Failed to load image"))
+                error_label.add_css_class("error")
+                box.append(error_label)
+                
+        except Exception as e:
+            error_label = Gtk.Label(label=f"{_('Error loading image')}: {str(e)}")
+            error_label.add_css_class("error")
+            box.append(error_label)
+
+        return box
+
+    def _create_text_preview(self):
+        """Create text preview."""
+        box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=12)
+        box.set_margin_top(12)
+        box.set_margin_bottom(12)
+        box.set_margin_start(12)
+        box.set_margin_end(12)
+
+        # File info
+        info_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=12)
+        info_labels = [
+            f"{_('Filename')}: {self._file_obj.filename}",
+            f"{_('Type')}: {self._file_obj.mime_type}",
+            f"{_('Size')}: {self._format_size(self._file_obj.size)}"
+        ]
+        
+        for info in info_labels:
+            label = Gtk.Label(label=info)
+            label.add_css_class("dim-label")
+            info_box.append(label)
+        
+        box.append(info_box)
+
+        # Text content
+        text_view = Gtk.TextView()
+        text_view.set_editable(False)
+        text_view.set_cursor_visible(False)
+        text_view.set_monospace(True)
+        text_view.add_css_class("text-preview")
+
+        try:
+            # Try to decode text
+            if isinstance(self._file_obj.data, bytes):
+                text_content = self._file_obj.data.decode('utf-8', errors='replace')
+            else:
+                text_content = str(self._file_obj.data)
+            
+            # Limit preview size for performance
+            if len(text_content) > 10000:
+                text_content = text_content[:10000] + f"\n\n[... {_('truncated')} ...]"
+            
+            buf = text_view.get_buffer()
+            buf.set_text(text_content)
+            
+        except Exception as e:
+            buf = text_view.get_buffer()
+            buf.set_text(f"{_('Error decoding text')}: {str(e)}")
+
+        scroll = Gtk.ScrolledWindow()
+        scroll.set_child(text_view)
+        scroll.set_vexpand(True)
+        scroll.set_min_content_height(300)
+        box.append(scroll)
+
+        return box
+
+    def _create_generic_preview(self):
+        """Create preview for non-previewable files."""
+        box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=12)
+        box.set_margin_top(12)
+        box.set_margin_bottom(12)
+        box.set_margin_start(12)
+        box.set_margin_end(12)
+
+        # File icon (generic)
+        icon = Gtk.Image.new_from_icon_name("text-x-generic-symbolic")
+        icon.set_pixel_size(64)
+        box.append(icon)
+
+        # File info
+        info_labels = [
+            f"{_('Filename')}: {self._file_obj.filename}",
+            f"{_('Type')}: {self._file_obj.mime_type}",
+            f"{_('Size')}: {self._format_size(self._file_obj.size)}",
+            f"{_('Protocol')}: {self._file_obj.protocol}"
+        ]
+        
+        for info in info_labels:
+            label = Gtk.Label(label=info)
+            label.set_halign(Gtk.Align.START)
+            box.append(label)
+
+        # Note about preview
+        note_label = Gtk.Label(label=_("This file type cannot be previewed"))
+        note_label.add_css_class("dim-label")
+        box.append(note_label)
+
+        return box
+
+    def _format_size(self, size):
+        """Format file size in human-readable format."""
+        for unit in ["B", "KB", "MB", "GB"]:
+            if size < 1024:
+                return f"{size:.1f} {unit}"
+            size /= 1024
+        return f"{size:.1f} TB"
+
+    def _on_save_clicked(self, btn):
+        """Handle save button click."""
+        dialog = Gtk.FileDialog()
+        dialog.set_title(_("Save File As"))
+        dialog.set_initial_name(self._file_obj.filename)
+        dialog.save(self, None, self._on_save_file_selected)
+
+    def _on_save_file_selected(self, dialog, result):
+        try:
+            file_gio = dialog.save_finish(result)
+            if file_gio:
+                with open(file_gio.get_path(), 'wb') as f:
+                    f.write(self._file_obj.data)
+        except Exception as e:
+            print(f"Error saving file: {e}")
 
 
 class FileExtractorView(Gtk.Box):
@@ -97,9 +385,19 @@ class FileExtractorView(Gtk.Box):
         self._file_store = Gio.ListStore(item_type=FileObject)
         selection = Gtk.SingleSelection(model=self._file_store)
         selection.connect("notify::selected", self._on_file_selected)
+        self._selection = selection
 
         self._column_view = Gtk.ColumnView(model=selection)
         self._column_view.add_css_class("data-table")
+
+        # Add thumbnail column
+        thumb_factory = Gtk.SignalListItemFactory()
+        thumb_factory.connect("setup", self._on_thumbnail_setup)
+        thumb_factory.connect("bind", self._on_thumbnail_bind)
+        thumb_col = Gtk.ColumnViewColumn(title="", factory=thumb_factory)
+        thumb_col.set_fixed_width(60)
+        thumb_col.set_resizable(False)
+        self._column_view.append_column(thumb_col)
 
         columns = [
             (_("Filename"), "filename", 200),
@@ -118,14 +416,24 @@ class FileExtractorView(Gtk.Box):
             col.set_resizable(True)
             self._column_view.append_column(col)
 
+        # Add double-click gesture for previewing
+        click_gesture = Gtk.GestureClick()
+        click_gesture.connect("released", self._on_row_double_clicked)
+        self._column_view.add_controller(click_gesture)
+
         scroll = Gtk.ScrolledWindow()
         scroll.set_vexpand(True)
         scroll.set_child(self._column_view)
         self.append(scroll)
 
-        # Save button for individual files
+        # Action buttons for individual files
         btn_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=12)
         btn_box.set_halign(Gtk.Align.END)
+
+        self._preview_btn = Gtk.Button(label=_("Preview"))
+        self._preview_btn.set_sensitive(False)
+        self._preview_btn.connect("clicked", self._on_preview_clicked)
+        btn_box.append(self._preview_btn)
 
         self._save_btn = Gtk.Button(label=_("Save Selected"))
         self._save_btn.set_sensitive(False)
@@ -133,6 +441,30 @@ class FileExtractorView(Gtk.Box):
         btn_box.append(self._save_btn)
 
         self.append(btn_box)
+
+    def _on_thumbnail_setup(self, factory, list_item):
+        """Setup thumbnail column items."""
+        image = Gtk.Image()
+        image.set_pixel_size(48)
+        list_item.set_child(image)
+
+    def _on_thumbnail_bind(self, factory, list_item):
+        """Bind thumbnail data to column items."""
+        item = list_item.get_item()
+        image = list_item.get_child()
+        
+        if item.is_image() and item.thumbnail:
+            image.set_from_pixbuf(item.thumbnail)
+            image.set_tooltip_text(_("Image preview available"))
+        elif item.is_text():
+            image.set_from_icon_name("text-x-generic-symbolic")
+            image.set_tooltip_text(_("Text preview available"))
+        elif item.is_previewable:
+            image.set_from_icon_name("document-properties-symbolic")
+            image.set_tooltip_text(_("Preview available"))
+        else:
+            image.set_from_icon_name("application-x-executable-symbolic")
+            image.set_tooltip_text(_("Binary file"))
 
     def _on_col_setup(self, factory, list_item):
         label = Gtk.Label()
@@ -160,6 +492,14 @@ class FileExtractorView(Gtk.Box):
     def _on_file_selected(self, selection, pspec):
         item = selection.get_selected_item()
         self._save_btn.set_sensitive(item is not None)
+        self._preview_btn.set_sensitive(item is not None and item.is_previewable if item else False)
+
+    def _on_row_double_clicked(self, gesture, n_press, x, y):
+        """Handle double-click on file list row."""
+        if n_press == 2:  # Double click
+            item = self._selection.get_selected_item()
+            if item and item.is_previewable:
+                self._on_preview_clicked(None)
 
     def _on_extract_clicked(self, btn):
         """Extract files from loaded packets."""
@@ -175,10 +515,21 @@ class FileExtractorView(Gtk.Box):
         dialog.set_title(_("Select Directory to Save Files"))
         dialog.select_folder(None, None, self._on_save_all_folder_selected)
 
+    def _on_preview_clicked(self, btn):
+        """Preview selected file."""
+        item = self._selection.get_selected_item()
+        if item and item.is_previewable:
+            # Find the parent window
+            parent = self
+            while parent and not isinstance(parent, Gtk.Window):
+                parent = parent.get_parent()
+            
+            preview_dialog = FilePreviewDialog(item, parent)
+            preview_dialog.present()
+
     def _on_save_selected_clicked(self, btn):
         """Save selected file."""
-        selection = self._column_view.get_model()
-        item = selection.get_selected_item()
+        item = self._selection.get_selected_item()
         if not item:
             return
 
@@ -433,3 +784,5 @@ class FileExtractorView(Gtk.Box):
             self._extracted_files.clear()
             self._status_label.set_text(_("No files extracted yet"))
             self._save_all_btn.set_sensitive(False)
+            self._preview_btn.set_sensitive(False)
+            self._save_btn.set_sensitive(False)

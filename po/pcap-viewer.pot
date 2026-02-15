@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: pcap-viewer\n"
 "Report-Msgid-Bugs-To: daniel@danielnylander.se\n"
-"POT-Creation-Date: 2026-02-15 12:52+0100\n"
+"POT-Creation-Date: 2026-02-15 12:55+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -50,7 +50,8 @@ msgstr ""
 msgid "Protocol Statistics"
 msgstr ""
 
-#: src/pcap_viewer/protocol_stats.py:322 src/pcap_viewer/file_extractor.py:107
+#: src/pcap_viewer/protocol_stats.py:322 src/pcap_viewer/file_extractor.py:213
+#: src/pcap_viewer/file_extractor.py:310 src/pcap_viewer/file_extractor.py:405
 #: src/pcap_viewer/conversations.py:117 src/pcap_viewer/conversations.py:220
 #: src/pcap_viewer/conversations.py:238
 msgid "Protocol"
@@ -332,7 +333,8 @@ msgstr ""
 msgid "Query"
 msgstr ""
 
-#: src/pcap_viewer/dns_analyzer.py:172
+#: src/pcap_viewer/dns_analyzer.py:172 src/pcap_viewer/file_extractor.py:248
+#: src/pcap_viewer/file_extractor.py:308
 msgid "Type"
 msgstr ""
 
@@ -381,47 +383,109 @@ msgstr ""
 msgid "Top Domains"
 msgstr ""
 
-#: src/pcap_viewer/file_extractor.py:80
-msgid "Extract Files"
+#: src/pcap_viewer/file_extractor.py:136 src/pcap_viewer/file_extractor.py:433
+msgid "Preview"
 msgstr ""
 
-#: src/pcap_viewer/file_extractor.py:85
-msgid "Save All"
+#: src/pcap_viewer/file_extractor.py:149
+msgid "Save"
 msgstr ""
 
-#: src/pcap_viewer/file_extractor.py:90 src/pcap_viewer/file_extractor.py:434
-msgid "No files extracted yet"
+#: src/pcap_viewer/file_extractor.py:196
+msgid "Image Information"
 msgstr ""
 
-#: src/pcap_viewer/file_extractor.py:105
+#: src/pcap_viewer/file_extractor.py:209 src/pcap_viewer/file_extractor.py:247
+#: src/pcap_viewer/file_extractor.py:307 src/pcap_viewer/file_extractor.py:403
 msgid "Filename"
 msgstr ""
 
-#: src/pcap_viewer/file_extractor.py:106 src/pcap_viewer/http_analyzer.py:210
+#: src/pcap_viewer/file_extractor.py:210
+msgid "Dimensions"
+msgstr ""
+
+#: src/pcap_viewer/file_extractor.py:211
+msgid "Format"
+msgstr ""
+
+#: src/pcap_viewer/file_extractor.py:212
+msgid "File Size"
+msgstr ""
+
+#: src/pcap_viewer/file_extractor.py:225
+msgid "Failed to load image"
+msgstr ""
+
+#: src/pcap_viewer/file_extractor.py:230
+msgid "Error loading image"
+msgstr ""
+
+#: src/pcap_viewer/file_extractor.py:249 src/pcap_viewer/file_extractor.py:309
+#: src/pcap_viewer/file_extractor.py:404 src/pcap_viewer/http_analyzer.py:210
 msgid "Size"
 msgstr ""
 
-#: src/pcap_viewer/file_extractor.py:108
-msgid "MIME Type"
+#: src/pcap_viewer/file_extractor.py:275
+msgid "truncated"
 msgstr ""
 
-#: src/pcap_viewer/file_extractor.py:109 src/pcap_viewer/conversations.py:237
-msgid "Stream"
+#: src/pcap_viewer/file_extractor.py:282
+msgid "Error decoding text"
 msgstr ""
 
-#: src/pcap_viewer/file_extractor.py:130
-msgid "Save Selected"
+#: src/pcap_viewer/file_extractor.py:319
+msgid "This file type cannot be previewed"
 msgstr ""
 
-#: src/pcap_viewer/file_extractor.py:175
-msgid "Select Directory to Save Files"
-msgstr ""
-
-#: src/pcap_viewer/file_extractor.py:186
+#: src/pcap_viewer/file_extractor.py:336 src/pcap_viewer/file_extractor.py:537
 msgid "Save File As"
 msgstr ""
 
-#: src/pcap_viewer/file_extractor.py:255
+#: src/pcap_viewer/file_extractor.py:368
+msgid "Extract Files"
+msgstr ""
+
+#: src/pcap_viewer/file_extractor.py:373
+msgid "Save All"
+msgstr ""
+
+#: src/pcap_viewer/file_extractor.py:378 src/pcap_viewer/file_extractor.py:785
+msgid "No files extracted yet"
+msgstr ""
+
+#: src/pcap_viewer/file_extractor.py:406
+msgid "MIME Type"
+msgstr ""
+
+#: src/pcap_viewer/file_extractor.py:407 src/pcap_viewer/conversations.py:237
+msgid "Stream"
+msgstr ""
+
+#: src/pcap_viewer/file_extractor.py:438
+msgid "Save Selected"
+msgstr ""
+
+#: src/pcap_viewer/file_extractor.py:458
+msgid "Image preview available"
+msgstr ""
+
+#: src/pcap_viewer/file_extractor.py:461
+msgid "Text preview available"
+msgstr ""
+
+#: src/pcap_viewer/file_extractor.py:464
+msgid "Preview available"
+msgstr ""
+
+#: src/pcap_viewer/file_extractor.py:467
+msgid "Binary file"
+msgstr ""
+
+#: src/pcap_viewer/file_extractor.py:515
+msgid "Select Directory to Save Files"
+msgstr ""
+
+#: src/pcap_viewer/file_extractor.py:606
 #, python-brace-format
 msgid "{count} files extracted"
 msgstr ""

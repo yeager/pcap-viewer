@@ -6,3 +6,9 @@ file_filter  = po/<lang>.po
 source_file  = po/packetlens.pot
 source_lang  = en
 type         = PO
+
+[o:danielnylander:p:pcap-viewer:r:packetlens-man]
+file_filter  = po/man/<lang>.po
+source_file  = po/man/packetlens.1.pot
+source_lang  = en
+type         = PO

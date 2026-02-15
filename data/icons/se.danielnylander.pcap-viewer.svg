@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#3584e4"/>
+      <stop offset="100%" stop-color="#1a5fb4"/>
+    </linearGradient>
+  </defs>
+  <rect width="128" height="128" rx="16" fill="url(#bg)"/>
+  <!-- Network nodes -->
+  <circle cx="64" cy="36" r="10" fill="white" opacity="0.95"/>
+  <circle cx="34" cy="88" r="10" fill="white" opacity="0.95"/>
+  <circle cx="94" cy="88" r="10" fill="white" opacity="0.95"/>
+  <!-- Connections -->
+  <line x1="64" y1="46" x2="34" y2="78" stroke="white" stroke-width="3" opacity="0.7"/>
+  <line x1="64" y1="46" x2="94" y2="78" stroke="white" stroke-width="3" opacity="0.7"/>
+  <line x1="34" y1="88" x2="94" y2="88" stroke="white" stroke-width="3" opacity="0.7"/>
+  <!-- Packet dots on lines -->
+  <circle cx="49" cy="62" r="4" fill="#f6d32d"/>
+  <circle cx="79" cy="62" r="4" fill="#f6d32d"/>
+  <circle cx="64" cy="88" r="4" fill="#f6d32d"/>
+</svg>

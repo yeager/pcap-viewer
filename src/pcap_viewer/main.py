@@ -406,6 +406,8 @@ class PcapViewerWindow(Adw.ApplicationWindow):
             license_type=Gtk.License.GPL_3_0,
             website="https://github.com/yeager/pcap-viewer",
             issue_url="https://github.com/yeager/pcap-viewer/issues",
+            translate_url="https://app.transifex.com/danielnylander/pcap-viewer/",
+            translator_credits="Daniel Nylander <daniel@danielnylander.se>",
             transient_for=self,
         )
         about.present()

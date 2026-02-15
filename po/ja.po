@@ -2,9 +2,6 @@
 # Copyright (C) 2026 Daniel Nylander
 # This file is distributed under the same license as the packetlens package.
 # 
-# Translators:
-# Daniel Nylander <po@danielnylander.se>, 2026
-# 
 #, fuzzy
 msgid ""
 msgstr ""
@@ -12,467 +9,464 @@ msgstr ""
 "Report-Msgid-Bugs-To: daniel@danielnylander.se\n"
 "POT-Creation-Date: 2026-02-15 14:00+0100\n"
 "PO-Revision-Date: 2026-02-15 12:30+0000\n"
-"Last-Translator: Daniel Nylander <po@danielnylander.se>, 2026\n"
-"Language-Team: Swedish (https://app.transifex.com/danielnylander/teams/304807/sv/)\n"
+"Language-Team: Japanese (https://app.transifex.com/danielnylander/teams/304807/ja/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: sv\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Language: ja\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
 
 msgid "No data to display"
-msgstr "Inga data att visa"
+msgstr ""
 
 msgid "Analyze Protocols"
-msgstr "Analysera protokoll"
+msgstr ""
 
 msgid "Chart type:"
-msgstr "Diagramtyp:"
+msgstr ""
 
 msgid "Pie Chart"
-msgstr "Cirkeldiagram"
+msgstr ""
 
 msgid "Bar Chart"
-msgstr "Stapeldiagram"
+msgstr ""
 
 msgid "No analysis performed yet"
-msgstr "Ingen analys har utförts ännu"
+msgstr ""
 
 msgid "Protocol Distribution"
-msgstr "Protokolldistribution"
+msgstr ""
 
 msgid "Protocol Statistics"
-msgstr "Protokollstatistik"
+msgstr ""
 
 msgid "Protocol"
-msgstr "Protokoll"
+msgstr ""
 
 msgid "Packets"
-msgstr "Paket"
+msgstr ""
 
 msgid "Bytes"
-msgstr "Byte"
+msgstr ""
 
 msgid "%"
-msgstr "%"
+msgstr ""
 
 msgid "Top Talkers"
-msgstr "Mest aktiva"
+msgstr ""
 
 msgid "IP Address"
-msgstr "IP-adress"
+msgstr ""
 
 msgid "Analyzed {packets} packets, {protocols} protocols"
-msgstr "Analyserade {packets} paket, {protocols} protokoll"
+msgstr ""
 
 msgid "Bandwidth Over Time"
-msgstr "Bandbredd över tid"
+msgstr ""
 
 msgid "Packets Over Time"
-msgstr "Paket över tid"
+msgstr ""
 
 msgid "No packet data to display"
-msgstr "Inga paketdata att visa"
+msgstr ""
 
 msgid "packets"
-msgstr "paket"
+msgstr ""
 
 msgid "Protocols:"
-msgstr "Protokoll:"
+msgstr ""
 
 msgid "Generate Timeline"
-msgstr "Generera tidslinje"
+msgstr ""
 
 msgid "View:"
-msgstr "Visa:"
+msgstr ""
 
 msgid "Bandwidth"
-msgstr "Bandbredd"
+msgstr ""
 
 msgid "Time bucket:"
-msgstr "Tidsintervall:"
+msgstr ""
 
 msgid "0.1 seconds"
-msgstr "0,1 sekunder"
+msgstr ""
 
 msgid "1 second"
-msgstr "1 sekund"
+msgstr ""
 
 msgid "10 seconds"
-msgstr "10 sekunder"
+msgstr ""
 
 msgid "1 minute"
-msgstr "1 minut"
+msgstr ""
 
 msgid "No timeline analysis performed yet"
-msgstr "Ingen tidslinjeanalys har utförts ännu"
+msgstr ""
 
 msgid "Traffic Timeline"
-msgstr "Trafikens tidslinje"
+msgstr ""
 
 msgid "Timeline Statistics"
-msgstr "Tidslinjestatistik"
+msgstr ""
 
 msgid "Timeline generated from {packets} packets over {duration:.1f}s"
-msgstr "Tidslinje genererad från {packets} paket under {duration:.1f}s"
+msgstr ""
 
 msgid "Basic Statistics"
-msgstr "Grundläggande statistik"
+msgstr ""
 
 msgid "Top Protocols"
-msgstr "Mesta protokollen"
+msgstr ""
 
 msgid "Analyze TLS"
-msgstr "Analysera TLS"
+msgstr ""
 
 msgid "Filter:"
-msgstr "Filter:"
+msgstr ""
 
 msgid "Search SNI, subject..."
-msgstr "Sök efter SNI, namn..."
+msgstr ""
 
 msgid "Issues only"
-msgstr "Endast problem"
+msgstr ""
 
 msgid "No TLS analysis performed yet"
-msgstr "Ingen TLS-analys har utförts ännu"
+msgstr ""
 
 msgid "Connection"
-msgstr "Anslutning"
+msgstr ""
 
 msgid "SNI"
-msgstr "SNI"
+msgstr ""
 
 msgid "TLS Version"
-msgstr "TLS-version"
+msgstr ""
 
 msgid "Cipher Suite"
-msgstr "Chiffersvit"
+msgstr ""
 
 msgid "Issues"
-msgstr "Problem"
+msgstr ""
 
 msgid "Connection Details"
-msgstr "Anslutningsinformation"
+msgstr ""
 
 msgid "TLS Statistics"
-msgstr "TLS-statistik"
+msgstr ""
 
 msgid "None"
-msgstr "Ingen"
+msgstr ""
 
 msgid "Weak TLS version"
-msgstr "Svag TLS-version"
+msgstr ""
 
 msgid "Weak cipher"
-msgstr "Svagt chiffer"
+msgstr ""
 
 msgid "Expired certificate"
-msgstr "Utgånget certifikat"
+msgstr ""
 
 msgid "{connections} TLS connections found"
-msgstr "{connections} TLS-anslutningar hittades"
+msgstr ""
 
 msgid "Certificate present (parsing not implemented)"
-msgstr "Certifikat finns (tolkning inte implementerad)"
+msgstr ""
 
 msgid "See certificate details"
-msgstr "Se certifikatdetaljer"
+msgstr ""
 
 msgid "Unknown"
-msgstr "Okänd"
+msgstr ""
 
 msgid "TLS Versions"
-msgstr "TLS-versioner"
+msgstr ""
 
 msgid "Top Cipher Suites"
-msgstr "Mesta chiffersviterna"
+msgstr ""
 
 msgid "Analyze DNS"
-msgstr "Analysera DNS"
+msgstr ""
 
 msgid "Search domain names..."
-msgstr "Sök efter domännamn..."
+msgstr ""
 
 msgid "Type:"
-msgstr "Typ:"
+msgstr ""
 
 msgid "All"
-msgstr "Alla"
+msgstr ""
 
 msgid "Errors only"
-msgstr "Endast fel"
+msgstr ""
 
 msgid "No DNS analysis performed yet"
-msgstr "Ingen DNS-analys har utförts ännu"
+msgstr ""
 
 msgid "Time"
-msgstr "Tid"
+msgstr ""
 
 msgid "Query"
-msgstr "Fråga"
+msgstr ""
 
 msgid "Type"
-msgstr "Typ"
+msgstr ""
 
 msgid "Response"
-msgstr "Svar"
+msgstr ""
 
 msgid "TTL"
-msgstr "TTL"
+msgstr ""
 
 msgid "Status"
-msgstr "Status"
+msgstr ""
 
 msgid "DNS Statistics"
-msgstr "DNS-statistik"
+msgstr ""
 
 msgid "OK"
-msgstr "OK"
+msgstr ""
 
 msgid "{records} DNS records analyzed"
-msgstr "{records} DNS-poster analyserade"
+msgstr ""
 
 msgid "Top Record Types"
-msgstr "Vanligaste posttyperna"
+msgstr ""
 
 msgid "Top Domains"
-msgstr "Toppdomäner"
+msgstr ""
 
 msgid "Save"
-msgstr "Spara"
+msgstr ""
 
 msgid "Image Information"
-msgstr "Bildinformation"
+msgstr ""
 
 msgid "Failed to load image"
-msgstr "Misslyckades med att läsa in bilden"
+msgstr ""
 
 msgid "This file type cannot be previewed"
-msgstr "Denna filtyp kan inte förhandsvisas"
+msgstr ""
 
 msgid "Save File As"
-msgstr "Spara fil som"
+msgstr ""
 
 msgid "Extract Files"
-msgstr "Extrahera filer"
+msgstr ""
 
 msgid "Save All"
-msgstr "Spara alla"
+msgstr ""
 
 msgid "No files extracted yet"
-msgstr "Inga filer har extraherats ännu"
+msgstr ""
 
 msgid "Filename"
-msgstr "Filnamn"
+msgstr ""
 
 msgid "Size"
-msgstr "Storlek"
+msgstr ""
 
 msgid "MIME Type"
-msgstr "MIME-typ"
+msgstr ""
 
 msgid "Stream"
-msgstr "Ström"
+msgstr ""
 
 msgid "Preview"
-msgstr "Förhandsvisa"
+msgstr ""
 
 msgid "Save Selected"
-msgstr "Spara markerade"
+msgstr ""
 
 msgid "Image preview available"
-msgstr "Bildförhandsvisning tillgänglig"
+msgstr ""
 
 msgid "Text preview available"
-msgstr "Textförhandsvisning tillgänglig"
+msgstr ""
 
 msgid "Preview available"
-msgstr "Förhandsvisning tillgänglig"
+msgstr ""
 
 msgid "Binary file"
-msgstr "Binärfil"
+msgstr ""
 
 msgid "Select Directory to Save Files"
-msgstr "Välj katalog för att spara filer"
+msgstr ""
 
 msgid "{count} files extracted"
-msgstr "{count} filer extraherade"
+msgstr ""
 
 msgid "Informational"
-msgstr "Informativ"
+msgstr ""
 
 msgid "Success"
-msgstr "Lyckades"
+msgstr ""
 
 msgid "Redirection"
-msgstr "Omdirigering"
+msgstr ""
 
 msgid "Client Error"
-msgstr "Klientfel"
+msgstr ""
 
 msgid "Server Error"
-msgstr "Serverfel"
+msgstr ""
 
 msgid "Analyze HTTP"
-msgstr "Analysera HTTP"
+msgstr ""
 
 msgid "Search URLs, hosts..."
-msgstr "Sök efter URL:er, värdar..."
+msgstr ""
 
 msgid "Method:"
-msgstr "Metod:"
+msgstr ""
 
 msgid "Status:"
-msgstr "Status:"
+msgstr ""
 
 msgid "2xx Success"
-msgstr "2xx Lyckade"
+msgstr ""
 
 msgid "3xx Redirect"
-msgstr "3xx Omdirigering"
+msgstr ""
 
 msgid "4xx Client Error"
-msgstr "4xx Klientfel"
+msgstr ""
 
 msgid "5xx Server Error"
-msgstr "5xx Serverfel"
+msgstr ""
 
 msgid "No HTTP analysis performed yet"
-msgstr "Ingen HTTP-analys har utförts ännu"
+msgstr ""
 
 msgid "Method"
-msgstr "Metod"
+msgstr ""
 
 msgid "Host"
-msgstr "Värd"
+msgstr ""
 
 msgid "URL"
-msgstr "URL"
+msgstr ""
 
 msgid "Content-Type"
-msgstr "Innehållstyp"
+msgstr ""
 
 msgid "Request"
-msgstr "Begäran"
+msgstr ""
 
 msgid "Headers"
-msgstr "Rubriker"
+msgstr ""
 
 msgid "No response captured"
-msgstr "Inget svar registrerat"
+msgstr ""
 
 msgid "REQUEST HEADERS:"
-msgstr "RUBRIKER FÖR BEGÄRAN:"
+msgstr ""
 
 msgid "RESPONSE HEADERS:"
-msgstr "RUBRIKER FÖR SVAR:"
+msgstr ""
 
 msgid "Select a transaction to view details"
-msgstr "Välj en transaktion för att visa detaljer"
+msgstr ""
 
 msgid "{transactions} HTTP transactions found"
-msgstr "{transactions} HTTP-transaktioner hittades"
+msgstr ""
 
 msgid "PacketLens"
-msgstr "PacketLens"
+msgstr ""
 
 msgid "BPF Filter (e.g., tcp port 80)…"
-msgstr "BPF-filter (t.ex. tcp-port 80)…"
+msgstr ""
 
 msgid "All packets"
-msgstr "Alla paket"
+msgstr ""
 
 msgid "Open PCAP file"
-msgstr "Öppna PCAP-fil"
+msgstr ""
 
 msgid "Statistics"
-msgstr "Statistik"
+msgstr ""
 
 msgid "About"
-msgstr "Om"
+msgstr ""
 
 msgid "No Capture Loaded"
-msgstr "Ingen nätverksdump inläst"
+msgstr ""
 
 msgid ""
 "Open a .pcap or .pcapng file to begin analysis.\n"
 "You can also drag and drop files here."
 msgstr ""
-"Öppna en .pcap- eller .pcapng-fil för att påbörja analysen.\n"
-"Du kan också dra och släppa filer här."
 
 msgid "Conversations"
-msgstr "Konversationer"
+msgstr ""
 
 msgid "Protocol Stats"
-msgstr "Protokollstatistik"
+msgstr ""
 
 msgid "DNS"
-msgstr "DNS"
+msgstr ""
 
 msgid "HTTP"
-msgstr "HTTP"
+msgstr ""
 
 msgid "TLS"
-msgstr "TLS"
+msgstr ""
 
 msgid "Files"
-msgstr "Filer"
+msgstr ""
 
 msgid "Timeline"
-msgstr "Tidslinje"
+msgstr ""
 
 msgid "Open PCAP File"
-msgstr "Öppna PCAP-fil"
+msgstr ""
 
 msgid "PCAP files"
-msgstr "PCAP-filer"
+msgstr ""
 
 msgid "All files"
-msgstr "Alla filer"
+msgstr ""
 
 msgid "Loading…"
-msgstr "Läser in…"
+msgstr ""
 
 msgid "Error: "
-msgstr "Fel: "
+msgstr ""
 
 msgid "{shown} of {total} packets"
-msgstr "{shown} av {total} paket"
+msgstr ""
 
 msgid "No capture loaded"
-msgstr "Ingen nätverksdump inläst"
+msgstr ""
 
 msgid "DNS Queries"
-msgstr "DNS-förfrågningar"
+msgstr ""
 
 msgid "Analyze Conversations"
-msgstr "Analysera konversationer"
+msgstr ""
 
 msgid "No conversations analyzed yet"
-msgstr "Inga konversationer har analyserats ännu"
+msgstr ""
 
 msgid "Conversation"
-msgstr "Konversation"
+msgstr ""
 
 msgid "Duration (s)"
-msgstr "Varaktighet (s)"
+msgstr ""
 
 msgid "Stream Data"
-msgstr "Strömdata"
+msgstr ""
 
 msgid "Follow Stream"
-msgstr "Följ ström"
+msgstr ""
 
 msgid "Click 'Follow Stream' to see full conversation data"
-msgstr "Klicka på \"Följ ström\" för att se fullständiga konversationsdata"
+msgstr ""
 
 msgid "{count} conversations found"
-msgstr "{count} konversationer hittades"
+msgstr ""
 
 msgid "Select a conversation to view details"
-msgstr "Välj en konversation för att visa detaljer"
+msgstr ""
 
 msgid "Analyze network packet captures"
 msgstr ""

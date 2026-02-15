@@ -475,7 +475,7 @@ msgid "Select a conversation to view details"
 msgstr "Välj en konversation för att visa detaljer"
 
 msgid "Analyze network packet captures"
-msgstr ""
+msgstr "Analysera inspelad nätverkstrafik"
 
 msgid "Network Packet Analyzer"
-msgstr ""
+msgstr "Analysera nätverkspaket"

@@ -1,16 +1,14 @@
 # PacketLens translation template.
 # Copyright (C) 2026 Daniel Nylander
-# This file is distributed under the same license as the packetlens package.
-#
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: packetlens 0.2.1\n"
+"Project-Id-Version: packetlens 0.2.2\n"
 "Report-Msgid-Bugs-To: daniel@danielnylander.se\n"
-"POT-Creation-Date: 2026-02-15 14:00+0100\n"
+"POT-Creation-Date: 2026-02-15 15:30+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
+"Last-Translator: \n"
+"Language-Team: \n"
 "Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -385,6 +383,9 @@ msgstr ""
 msgid "Statistics"
 msgstr ""
 
+msgid "Preferences"
+msgstr ""
+
 msgid "About"
 msgstr ""
 
@@ -431,6 +432,39 @@ msgid "Error: "
 msgstr ""
 
 msgid "{shown} of {total} packets"
+msgstr ""
+
+msgid "Display"
+msgstr ""
+
+msgid "General"
+msgstr ""
+
+msgid "Color Scheme"
+msgstr ""
+
+msgid "Follow System"
+msgstr ""
+
+msgid "Light"
+msgstr ""
+
+msgid "Dark"
+msgstr ""
+
+msgid "Max packets to display"
+msgstr ""
+
+msgid "Network"
+msgstr ""
+
+msgid "Name Resolution"
+msgstr ""
+
+msgid "Resolve DNS names"
+msgstr ""
+
+msgid "Look up hostnames for IP addresses"
 msgstr ""
 
 msgid "No capture loaded"

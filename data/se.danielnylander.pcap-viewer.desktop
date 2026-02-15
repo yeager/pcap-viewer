@@ -1,9 +1,8 @@
 [Desktop Entry]
 Type=Application
 Name=PCAP Viewer
-Name[sv]=PCAP-visare
 Comment=Analyze network packet captures
-GenericName=Network Packet Analyzer
+_GenericName=Network Packet Analyzer
 Exec=pcap-viewer %f
 Icon=se.danielnylander.pcap-viewer
 Terminal=false

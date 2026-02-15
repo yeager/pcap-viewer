@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.2.2] — 2026-02-15
+
+### Added
+- Preferences dialog (color scheme, max packets, DNS name resolution)
+- Man page (packetlens.1)
+
+### Fixed
+- About dialog now accessible from hamburger menu
+
 ## [0.2.1] — 2026-02-15
 
 ### Changed

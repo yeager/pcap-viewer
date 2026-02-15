@@ -157,7 +157,7 @@ class DNSAnalyzerView(Gtk.Box):
         self._filter_model = Gtk.FilterListModel(model=self._dns_store)
         
         # Create custom filter
-        self._custom_filter = Gtk.CustomFilter(match_func=self._filter_func)
+        self._custom_filter = Gtk.CustomFilter.new(self._filter_func)
         self._filter_model.set_filter(self._custom_filter)
         
         selection = Gtk.SingleSelection(model=self._filter_model)

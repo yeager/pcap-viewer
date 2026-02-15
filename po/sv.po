@@ -388,7 +388,7 @@ msgid "Statistics"
 msgstr "Statistik"
 
 msgid "Preferences"
-msgstr ""
+msgstr "Inställningar"
 
 msgid "About"
 msgstr "Om"
@@ -443,37 +443,37 @@ msgid "{shown} of {total} packets"
 msgstr "{shown} av {total} paket"
 
 msgid "Display"
-msgstr ""
+msgstr "Visning"
 
 msgid "General"
-msgstr ""
+msgstr "Allmänt"
 
 msgid "Color Scheme"
-msgstr ""
+msgstr "Färgschema"
 
 msgid "Follow System"
-msgstr ""
+msgstr "Följ systemet"
 
 msgid "Light"
-msgstr ""
+msgstr "Ljust"
 
 msgid "Dark"
-msgstr ""
+msgstr "Mörkt"
 
 msgid "Max packets to display"
-msgstr ""
+msgstr "Max antal paket att visa"
 
 msgid "Network"
-msgstr ""
+msgstr "Nätverk"
 
 msgid "Name Resolution"
-msgstr ""
+msgstr "Namnuppslag"
 
 msgid "Resolve DNS names"
-msgstr ""
+msgstr "Slå upp DNS-namn"
 
 msgid "Look up hostnames for IP addresses"
-msgstr ""
+msgstr "Slå upp värdnamn för IP-adresser"
 
 msgid "No capture loaded"
 msgstr "Ingen nätverksdump inläst"

@@ -1,7 +1,7 @@
 [main]
 host = https://www.transifex.com
 
-[o:danielnylander:p:packetlens:r:packetlens-pot]
+[o:danielnylander:p:pcap-viewer:r:packetlens-pot]
 file_filter  = po/<lang>.po
 source_file  = po/packetlens.pot
 source_lang  = en

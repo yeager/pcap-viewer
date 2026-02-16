@@ -19,85 +19,90 @@ jobs:
 
       - name: Get version
         id: version
-        run: echo "version=$(grep -oP '__version__ = \"\K[^\"]+' src/pcap_viewer/__init__.py)" >> $GITHUB_OUTPUT
-
-      - name: Setup RPM build
-        run: |
-          mkdir -p ~/rpmbuild/{BUILD,RPMS,SOURCES,SPECS,SRPMS}
-          VERSION=${{ steps.version.outputs.version }}
-          PKG=packetlens-$VERSION
-          mkdir -p $PKG/src/pcap_viewer
-          mkdir -p $PKG/data/icons
-          mkdir -p $PKG/data/man
-          cp src/pcap_viewer/*.py $PKG/src/pcap_viewer/
-          cp data/se.danielnylander.packetlens.desktop $PKG/data/
-          cp data/icons/se.danielnylander.packetlens.svg $PKG/data/icons/
-          cp data/man/packetlens.1 $PKG/data/man/
-          cp LICENSE $PKG/
-          if [ -d locale ]; then
-            cp -r locale $PKG/
-          fi
-          tar czf ~/rpmbuild/SOURCES/packetlens-$VERSION.tar.gz $PKG
-
-      - name: Create spec file
-        run: |
-          VERSION=${{ steps.version.outputs.version }}
-          cat > ~/rpmbuild/SPECS/packetlens.spec << SPEC
-Name:           packetlens
-Version:        $VERSION
-Release:        1
-Summary:        GTK4 network packet capture analyzer
-License:        GPL-3.0-or-later
-URL:            https://github.com/yeager/pcap-viewer
-Source0:        %{name}-%{version}.tar.gz
-BuildArch:      noarch
-Requires:       python3 >= 3.9
-Requires:       python3-gobject
-Requires:       gtk4
-Requires:       libadwaita
-
-%description
-PacketLens is a GTK4/Libadwaita application for analyzing network packet captures.
-
-%prep
-%setup -q
-
-%install
-mkdir -p %{buildroot}%{_datadir}/packetlens
-cp src/pcap_viewer/*.py %{buildroot}%{_datadir}/packetlens/
-mkdir -p %{buildroot}%{_bindir}
-cat > %{buildroot}%{_bindir}/packetlens << 'WRAPPER'
-#!/bin/bash
-exec python3 %{_datadir}/packetlens/main.py "\$@"
-WRAPPER
-chmod 755 %{buildroot}%{_bindir}/packetlens
-install -Dm644 data/se.danielnylander.packetlens.desktop %{buildroot}%{_datadir}/applications/se.danielnylander.packetlens.desktop
-install -Dm644 data/icons/se.danielnylander.packetlens.svg %{buildroot}%{_datadir}/icons/hicolor/scalable/apps/se.danielnylander.packetlens.svg
-install -Dm644 data/man/packetlens.1 %{buildroot}%{_mandir}/man1/packetlens.1
-
-if [ -d locale ]; then
-  for mo in locale/*/LC_MESSAGES/*.mo; do
-    [ -f "\$mo" ] || continue
-    lang=\$(echo "\$mo" | cut -d/ -f2)
-    install -Dm644 "\$mo" "%{buildroot}%{_datadir}/locale/\$lang/LC_MESSAGES/packetlens.mo"
-  done
-fi
-
-%files
-%license LICENSE
-%{_bindir}/packetlens
-%{_datadir}/packetlens/
-%{_datadir}/applications/se.danielnylander.packetlens.desktop
-%{_datadir}/icons/hicolor/scalable/apps/se.danielnylander.packetlens.svg
-%{_mandir}/man1/packetlens.1*
-
-%changelog
-* Mon Feb 16 2026 Daniel Nylander <daniel@danielnylander.se> - $VERSION-1
-- RPM package
-SPEC
+        run: echo "version=$(grep -oP '__version__ = "\K[^"]+' src/pcap_viewer/__init__.py)" >> $GITHUB_OUTPUT
 
       - name: Build RPM
-        run: rpmbuild -ba ~/rpmbuild/SPECS/packetlens.spec
+        env:
+          VERSION: ${{ steps.version.outputs.version }}
+        shell: python3 {0}
+        run: |
+          import os, subprocess, textwrap, datetime
+          version = os.environ["VERSION"]
+          pkg = f"packetlens-{version}"
+          home = os.path.expanduser("~")
+
+          for d in ["BUILD","RPMS","SOURCES","SPECS","SRPMS"]:
+              os.makedirs(f"{home}/rpmbuild/{d}", exist_ok=True)
+
+          os.makedirs(f"{pkg}/src/pcap_viewer", exist_ok=True)
+          os.makedirs(f"{pkg}/data/icons", exist_ok=True)
+          os.makedirs(f"{pkg}/data/man", exist_ok=True)
+          subprocess.run(f"cp src/pcap_viewer/*.py {pkg}/src/pcap_viewer/", shell=True, check=True)
+          subprocess.run(f"cp data/se.danielnylander.packetlens.desktop {pkg}/data/", shell=True, check=True)
+          subprocess.run(f"cp data/icons/se.danielnylander.packetlens.svg {pkg}/data/icons/", shell=True, check=True)
+          subprocess.run(f"cp data/man/packetlens.1 {pkg}/data/man/", shell=True, check=True)
+          subprocess.run(f"cp LICENSE {pkg}/", shell=True, check=True)
+          subprocess.run(f"test -d locale && cp -r locale {pkg}/ || true", shell=True, check=True)
+          subprocess.run(f"tar czf {home}/rpmbuild/SOURCES/packetlens-{version}.tar.gz {pkg}", shell=True, check=True)
+
+          today = datetime.datetime.now().strftime("%a %b %d %Y")
+          spec = textwrap.dedent(f"""\
+          Name:           packetlens
+          Version:        {version}
+          Release:        1
+          Summary:        GTK4 network packet capture analyzer
+          License:        GPL-3.0-or-later
+          URL:            https://github.com/yeager/pcap-viewer
+          Source0:        %{{name}}-%{{version}}.tar.gz
+          BuildArch:      noarch
+          Requires:       python3 >= 3.9
+          Requires:       python3-gobject
+          Requires:       gtk4
+          Requires:       libadwaita
+
+          %description
+          PacketLens is a GTK4/Libadwaita application for analyzing network packet captures.
+
+          %prep
+          %setup -q
+
+          %install
+          mkdir -p %{{buildroot}}%{{_datadir}}/packetlens
+          cp src/pcap_viewer/*.py %{{buildroot}}%{{_datadir}}/packetlens/
+          mkdir -p %{{buildroot}}%{{_bindir}}
+          cat > %{{buildroot}}%{{_bindir}}/packetlens << 'WRAPPER'
+          #!/bin/bash
+          exec python3 %{{_datadir}}/packetlens/main.py "$@"
+          WRAPPER
+          chmod 755 %{{buildroot}}%{{_bindir}}/packetlens
+          install -Dm644 data/se.danielnylander.packetlens.desktop %{{buildroot}}%{{_datadir}}/applications/se.danielnylander.packetlens.desktop
+          install -Dm644 data/icons/se.danielnylander.packetlens.svg %{{buildroot}}%{{_datadir}}/icons/hicolor/scalable/apps/se.danielnylander.packetlens.svg
+          install -Dm644 data/man/packetlens.1 %{{buildroot}}%{{_mandir}}/man1/packetlens.1
+
+          if [ -d locale ]; then
+            for mo in locale/*/LC_MESSAGES/*.mo; do
+              [ -f "$mo" ] || continue
+              lang=$(echo "$mo" | cut -d/ -f2)
+              install -Dm644 "$mo" "%{{buildroot}}%{{_datadir}}/locale/$lang/LC_MESSAGES/packetlens.mo"
+            done
+          fi
+
+          %files
+          %license LICENSE
+          %{{_bindir}}/packetlens
+          %{{_datadir}}/packetlens/
+          %{{_datadir}}/applications/se.danielnylander.packetlens.desktop
+          %{{_datadir}}/icons/hicolor/scalable/apps/se.danielnylander.packetlens.svg
+          %{{_mandir}}/man1/packetlens.1*
+
+          %changelog
+          * {today} Daniel Nylander <daniel@danielnylander.se> - {version}-1
+          - RPM package
+          """)
+          with open(f"{home}/rpmbuild/SPECS/packetlens.spec", "w") as f:
+              f.write(spec)
+
+          subprocess.run(["rpmbuild", "-ba", f"{home}/rpmbuild/SPECS/packetlens.spec"], check=True)
 
       - name: Upload RPM to release
         if: github.event_name == 'release'

@@ -8,4 +8,4 @@ Icon=se.danielnylander.packetlens
 Terminal=false
 MimeType=application/vnd.tcpdump.pcap;application/x-pcapng;
 Categories=Network;Development;
-Keywords=pcap;network;packet;capture;sniffer;packetlens;
+_Keywords=pcap;network;packet;capture;sniffer;packetlens;

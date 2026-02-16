@@ -1,8 +1,11 @@
 [Desktop Entry]
 Type=Application
 Name=PacketLens
+Name[sv]=PacketLens
 Comment=Analyze network packet captures
+Comment[sv]=Analysera inspelad nätverkstrafik
 GenericName=Network Packet Analyzer
+GenericName[sv]=Analysera nätverkspaket
 Exec=packetlens %f
 Icon=se.danielnylander.packetlens
 Terminal=false

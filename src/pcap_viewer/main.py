@@ -563,21 +563,20 @@ class PcapViewerWindow(Adw.ApplicationWindow):
         prefs.present()
 
     def _on_about(self, action, param):
-        about = Adw.AboutWindow(
+        about = Adw.AboutDialog(
             application_name=_("PacketLens"),
             application_icon="network-wired-symbolic",
             version=__version__,
             developer_name="Daniel Nylander",
             developers=["Daniel Nylander <daniel@danielnylander.se>"],
-            copyright="© 2025 Daniel Nylander",
+            copyright="© 2026 Daniel Nylander",
             license_type=Gtk.License.GPL_3_0,
             website="https://github.com/yeager/pcap-viewer",
             issue_url="https://github.com/yeager/pcap-viewer/issues",
             translate_url="https://app.transifex.com/danielnylander/packetlens/",
             translator_credits="Daniel Nylander <daniel@danielnylander.se>",
-            transient_for=self,
         )
-        about.present()
+        about.present(self)
 
     def _on_show_stats(self, action, param):
         if self.pcap_file.packets is None:

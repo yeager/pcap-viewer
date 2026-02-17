@@ -1,5 +1,9 @@
 # PacketLens
 
+## Screenshot
+
+![Ubuntu L10n](screenshots/main.png)
+
 [![Version](https://img.shields.io/badge/version-0.2.2-blue)](https://github.com/yeager/pcap-viewer/releases)
 [![License](https://img.shields.io/badge/license-GPL--3.0-green)](LICENSE)
 [![Transifex](https://img.shields.io/badge/translate-Transifex-blue)](https://app.transifex.com/danielnylander/packetlens/)

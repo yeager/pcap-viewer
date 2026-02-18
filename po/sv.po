@@ -65,7 +65,7 @@ msgstr "Följ ström"
 
 #: src/pcap_viewer/conversations.py:223 src/pcap_viewer/timeline.py:592
 msgid "Duration"
-msgstr ""
+msgstr "Varaktighet"
 
 #: src/pcap_viewer/conversations.py:225
 msgid "Click 'Follow Stream' to see full conversation data"
@@ -161,15 +161,15 @@ msgstr "Grundläggande statistik"
 
 #: src/pcap_viewer/dns_analyzer.py:459
 msgid "Queries"
-msgstr ""
+msgstr "Frågor"
 
 #: src/pcap_viewer/dns_analyzer.py:460
 msgid "Responses"
-msgstr ""
+msgstr "Svar"
 
 #: src/pcap_viewer/dns_analyzer.py:461
 msgid "Errors"
-msgstr ""
+msgstr "Fel"
 
 #: src/pcap_viewer/dns_analyzer.py:467
 msgid "Top Record Types"
@@ -198,15 +198,15 @@ msgstr "Filnamn"
 
 #: src/pcap_viewer/file_extractor.py:210
 msgid "Dimensions"
-msgstr ""
+msgstr "Mått"
 
 #: src/pcap_viewer/file_extractor.py:211
 msgid "Format"
-msgstr ""
+msgstr "Format"
 
 #: src/pcap_viewer/file_extractor.py:212
 msgid "File Size"
-msgstr ""
+msgstr "Filstorlek"
 
 #: src/pcap_viewer/file_extractor.py:225
 msgid "Failed to load image"
@@ -214,7 +214,7 @@ msgstr "Misslyckades med att läsa in bilden"
 
 #: src/pcap_viewer/file_extractor.py:230
 msgid "Error loading image"
-msgstr ""
+msgstr "Fel vid inläsning av bild"
 
 #: src/pcap_viewer/file_extractor.py:249 src/pcap_viewer/file_extractor.py:309
 #: src/pcap_viewer/file_extractor.py:404 src/pcap_viewer/http_analyzer.py:210
@@ -223,11 +223,11 @@ msgstr "Storlek"
 
 #: src/pcap_viewer/file_extractor.py:275
 msgid "truncated"
-msgstr ""
+msgstr "avkortad"
 
 #: src/pcap_viewer/file_extractor.py:282
 msgid "Error decoding text"
-msgstr ""
+msgstr "Fel vid avkodning av text"
 
 #: src/pcap_viewer/file_extractor.py:319
 msgid "This file type cannot be previewed"
@@ -651,15 +651,15 @@ msgstr "Tidslinje genererad från {packets} paket under {duration:.1f}s"
 
 #: src/pcap_viewer/timeline.py:593
 msgid "Total Data"
-msgstr ""
+msgstr "Total data"
 
 #: src/pcap_viewer/timeline.py:594
 msgid "Avg Bandwidth"
-msgstr ""
+msgstr "Genomsn. bandbredd"
 
 #: src/pcap_viewer/timeline.py:595
 msgid "Traffic Spikes"
-msgstr ""
+msgstr "Trafikspikar"
 
 #: src/pcap_viewer/timeline.py:601
 msgid "Top Protocols"
@@ -715,11 +715,11 @@ msgstr "Ingen"
 
 #: src/pcap_viewer/tls_analyzer.py:318
 msgid "SNI (Server Name)"
-msgstr ""
+msgstr "SNI (Servernamn)"
 
 #: src/pcap_viewer/tls_analyzer.py:318
 msgid "Not available"
-msgstr ""
+msgstr "Inte tillgängligt"
 
 #: src/pcap_viewer/tls_analyzer.py:319 src/pcap_viewer/tls_analyzer.py:320
 #: src/pcap_viewer/tls_analyzer.py:554
@@ -728,15 +728,15 @@ msgstr "Okänd"
 
 #: src/pcap_viewer/tls_analyzer.py:324
 msgid "Certificate Subject"
-msgstr ""
+msgstr "Certifikatets ämne"
 
 #: src/pcap_viewer/tls_analyzer.py:326
 msgid "Certificate Issuer"
-msgstr ""
+msgstr "Certifikatets utfärdare"
 
 #: src/pcap_viewer/tls_analyzer.py:328
 msgid "Certificate Expiry"
-msgstr ""
+msgstr "Certifikatets giltighet"
 
 #: src/pcap_viewer/tls_analyzer.py:373
 msgid "Weak TLS version"
@@ -765,11 +765,11 @@ msgstr "Se certifikatdetaljer"
 
 #: src/pcap_viewer/tls_analyzer.py:568
 msgid "Connections"
-msgstr ""
+msgstr "Anslutningar"
 
 #: src/pcap_viewer/tls_analyzer.py:569
 msgid "With Issues"
-msgstr ""
+msgstr "Med problem"
 
 #: src/pcap_viewer/tls_analyzer.py:575
 msgid "TLS Versions"

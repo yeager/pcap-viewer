@@ -574,7 +574,7 @@ class PcapViewerWindow(Adw.ApplicationWindow):
             website="https://github.com/yeager/pcap-viewer",
             issue_url="https://github.com/yeager/pcap-viewer/issues",
             translate_url="https://app.transifex.com/danielnylander/packetlens/",
-            translator_credits="Daniel Nylander <daniel@danielnylander.se>",
+            translator_credits=_("Translate this app: https://www.transifex.com/danielnylander/packetlens/"),
         )
         about.present(self)
 

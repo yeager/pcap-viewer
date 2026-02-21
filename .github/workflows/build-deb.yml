@@ -15,7 +15,7 @@ jobs:
           PKG="packetlens"
           PYNAME="pcap_viewer"
           VER=$(python3 -c "
-          with open('pcap_viewer/__init__.py') as f:
+          with open('src/pcap_viewer/__init__.py') as f:
               for line in f:
                   if '__version__' in line:
                       print(line.split('\"')[1])
@@ -34,7 +34,7 @@ jobs:
           mkdir -p ${ROOT}/DEBIAN
 
           # Python package
-          cp -r ${PYNAME}/* ${ROOT}/usr/lib/python3/dist-packages/${PYNAME}/
+          cp -r src/${PYNAME}/* ${ROOT}/usr/lib/python3/dist-packages/${PYNAME}/
 
           # Launcher
           printf '#!/usr/bin/python3\nimport sys\nfrom pcap_viewer.main import main\nsys.exit(main())\n' > ${ROOT}/usr/bin/${PKG}
@@ -68,7 +68,7 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           VER=$(python3 -c "
-          with open('pcap_viewer/__init__.py') as f:
+          with open('src/pcap_viewer/__init__.py') as f:
               for line in f:
                   if '__version__' in line:
                       print(line.split('\"')[1])

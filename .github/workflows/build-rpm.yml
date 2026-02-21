@@ -50,6 +50,7 @@ jobs:
           Requires:       python3-gobject
           Requires:       gtk4
           Requires:       libadwaita
+          Requires:       python3-scapy
 
           %description
           PacketLens is a GTK4/Libadwaita application for analyzing network packet captures.

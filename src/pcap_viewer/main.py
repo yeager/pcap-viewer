@@ -32,8 +32,6 @@ _ = gettext.gettext
 
 APP_ID = "se.danielnylander.packetlens"
 
-
-
 def _wlc_settings_path():
     import os
     xdg = os.environ.get("XDG_CONFIG_HOME", os.path.expanduser("~/.config"))
@@ -102,7 +100,6 @@ class PacketObject(GObject.Object):
     def index(self):
         return self._index
 
-
 class LayerObject(GObject.Object):
     """GObject wrapper for layer tree items."""
 
@@ -120,7 +117,6 @@ class LayerObject(GObject.Object):
     @property
     def children(self):
         return self._children
-
 
 class PcapViewerWindow(Adw.ApplicationWindow):
     """Main application window."""
@@ -587,7 +583,6 @@ class PcapViewerWindow(Adw.ApplicationWindow):
         if not self._wlc_settings.get("welcome_shown"):
             self._show_welcome(self.props.active_window or self)
 
-
     def _on_about(self, action, param):
         about = Adw.AboutDialog(
             application_name=_("PacketLens"),
@@ -599,9 +594,10 @@ class PcapViewerWindow(Adw.ApplicationWindow):
             license_type=Gtk.License.GPL_3_0,
             website="https://github.com/yeager/pcap-viewer",
             issue_url="https://github.com/yeager/pcap-viewer/issues",
-            translate_url="https://app.transifex.com/danielnylander/packetlens/",
             translator_credits=_("Translate this app: https://www.transifex.com/danielnylander/packetlens/"),
         )
+        about.add_link(_("Help translate"), "https://app.transifex.com/danielnylander/packetlens/")
+
         about.present(self)
 
     def _on_show_stats(self, action, param):
@@ -653,7 +649,6 @@ class PcapViewerWindow(Adw.ApplicationWindow):
         win.set_content(box)
         win.present()
 
-
 class PcapViewerApp(Adw.Application):
     """Main application class."""
 
@@ -671,12 +666,10 @@ class PcapViewerApp(Adw.Application):
         if n_files > 0:
             self._window._load_file(files[0].get_path())
 
-
 def main():
     app = PcapViewerApp()
     app.set_flags(Gio.ApplicationFlags.HANDLES_OPEN)
     return app.run(sys.argv)
-
 
 if __name__ == "__main__":
     sys.exit(main())

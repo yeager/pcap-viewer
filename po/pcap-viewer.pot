@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-02-16 17:15+0100\n"
+"POT-Creation-Date: 2026-02-22 06:25+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -42,7 +42,7 @@ msgid "No analysis performed yet"
 msgstr ""
 
 #: src/pcap_viewer/protocol_stats.py:300 src/pcap_viewer/protocol_stats.py:422
-#: src/pcap_viewer/protocol_stats.py:495 src/pcap_viewer/main.py:605
+#: src/pcap_viewer/protocol_stats.py:495 src/pcap_viewer/main.py:631
 msgid "Protocol Distribution"
 msgstr ""
 
@@ -58,7 +58,7 @@ msgid "Protocol"
 msgstr ""
 
 #: src/pcap_viewer/protocol_stats.py:323 src/pcap_viewer/timeline.py:419
-#: src/pcap_viewer/timeline.py:473 src/pcap_viewer/main.py:193
+#: src/pcap_viewer/timeline.py:473 src/pcap_viewer/main.py:214
 #: src/pcap_viewer/conversations.py:118 src/pcap_viewer/conversations.py:221
 msgid "Packets"
 msgstr ""
@@ -72,7 +72,7 @@ msgstr ""
 msgid "%"
 msgstr ""
 
-#: src/pcap_viewer/protocol_stats.py:345 src/pcap_viewer/main.py:610
+#: src/pcap_viewer/protocol_stats.py:345 src/pcap_viewer/main.py:636
 msgid "Top Talkers"
 msgstr ""
 
@@ -591,149 +591,176 @@ msgstr ""
 msgid "{transactions} HTTP transactions found"
 msgstr ""
 
-#: src/pcap_viewer/main.py:109 src/pcap_viewer/main.py:419
-#: src/pcap_viewer/main.py:567
+#: src/pcap_viewer/main.py:130 src/pcap_viewer/main.py:440
+#: src/pcap_viewer/main.py:593
 msgid "PacketLens"
 msgstr ""
 
-#: src/pcap_viewer/main.py:131
+#: src/pcap_viewer/main.py:152
 msgid "BPF Filter (e.g., tcp port 80)…"
 msgstr ""
 
-#: src/pcap_viewer/main.py:139 src/pcap_viewer/main.py:469
-#: src/pcap_viewer/main.py:481
+#: src/pcap_viewer/main.py:160 src/pcap_viewer/main.py:490
+#: src/pcap_viewer/main.py:502
 msgid "All packets"
 msgstr ""
 
-#: src/pcap_viewer/main.py:151
+#: src/pcap_viewer/main.py:172
 msgid "Open PCAP file"
 msgstr ""
 
-#: src/pcap_viewer/main.py:156 src/pcap_viewer/main.py:589
+#: src/pcap_viewer/main.py:177 src/pcap_viewer/main.py:615
 msgid "Statistics"
 msgstr ""
 
-#: src/pcap_viewer/main.py:157 src/pcap_viewer/main.py:511
+#: src/pcap_viewer/main.py:178 src/pcap_viewer/main.py:532
 msgid "Preferences"
 msgstr ""
 
-#: src/pcap_viewer/main.py:158
+#: src/pcap_viewer/main.py:179
 msgid "About"
 msgstr ""
 
-#: src/pcap_viewer/main.py:176
+#: src/pcap_viewer/main.py:197
 msgid "No Capture Loaded"
 msgstr ""
 
-#: src/pcap_viewer/main.py:177
+#: src/pcap_viewer/main.py:198
 msgid ""
 "Open a .pcap or .pcapng file to begin analysis.\n"
 "You can also drag and drop files here."
 msgstr ""
 
-#: src/pcap_viewer/main.py:197 src/pcap_viewer/main.py:615
+#: src/pcap_viewer/main.py:218 src/pcap_viewer/main.py:641
 msgid "Conversations"
 msgstr ""
 
-#: src/pcap_viewer/main.py:201
+#: src/pcap_viewer/main.py:222
 msgid "Protocol Stats"
 msgstr ""
 
-#: src/pcap_viewer/main.py:205
+#: src/pcap_viewer/main.py:226
 msgid "DNS"
 msgstr ""
 
-#: src/pcap_viewer/main.py:209
+#: src/pcap_viewer/main.py:230
 msgid "HTTP"
 msgstr ""
 
-#: src/pcap_viewer/main.py:213
+#: src/pcap_viewer/main.py:234
 msgid "TLS"
 msgstr ""
 
-#: src/pcap_viewer/main.py:217
+#: src/pcap_viewer/main.py:238
 msgid "Files"
 msgstr ""
 
-#: src/pcap_viewer/main.py:221
+#: src/pcap_viewer/main.py:242
 msgid "Timeline"
 msgstr ""
 
-#: src/pcap_viewer/main.py:381
+#: src/pcap_viewer/main.py:402
 msgid "Open PCAP File"
 msgstr ""
 
-#: src/pcap_viewer/main.py:383
+#: src/pcap_viewer/main.py:404
 msgid "PCAP files"
 msgstr ""
 
-#: src/pcap_viewer/main.py:390
+#: src/pcap_viewer/main.py:411
 msgid "All files"
 msgstr ""
 
-#: src/pcap_viewer/main.py:406
+#: src/pcap_viewer/main.py:427
 msgid "Loading…"
 msgstr ""
 
-#: src/pcap_viewer/main.py:435
+#: src/pcap_viewer/main.py:456
 msgid "Error: "
 msgstr ""
 
-#: src/pcap_viewer/main.py:455
+#: src/pcap_viewer/main.py:476
 #, python-brace-format
 msgid "{shown} of {total} packets"
 msgstr ""
 
-#: src/pcap_viewer/main.py:514
+#: src/pcap_viewer/main.py:535
 msgid "Display"
 msgstr ""
 
-#: src/pcap_viewer/main.py:516
+#: src/pcap_viewer/main.py:537
 msgid "General"
 msgstr ""
 
-#: src/pcap_viewer/main.py:519
+#: src/pcap_viewer/main.py:540
 msgid "Color Scheme"
 msgstr ""
 
-#: src/pcap_viewer/main.py:521
+#: src/pcap_viewer/main.py:542
 msgid "Follow System"
 msgstr ""
 
-#: src/pcap_viewer/main.py:521
+#: src/pcap_viewer/main.py:542
 msgid "Light"
 msgstr ""
 
-#: src/pcap_viewer/main.py:521
+#: src/pcap_viewer/main.py:542
 msgid "Dark"
 msgstr ""
 
-#: src/pcap_viewer/main.py:543
+#: src/pcap_viewer/main.py:564
 msgid "Max packets to display"
 msgstr ""
 
-#: src/pcap_viewer/main.py:550
+#: src/pcap_viewer/main.py:571
 msgid "Network"
 msgstr ""
 
-#: src/pcap_viewer/main.py:552
+#: src/pcap_viewer/main.py:573
 msgid "Name Resolution"
 msgstr ""
 
-#: src/pcap_viewer/main.py:554
+#: src/pcap_viewer/main.py:575
 msgid "Resolve DNS names"
 msgstr ""
 
-#: src/pcap_viewer/main.py:555
+#: src/pcap_viewer/main.py:576
 msgid "Look up hostnames for IP addresses"
 msgstr ""
 
-#: src/pcap_viewer/main.py:583
+#: src/pcap_viewer/main.py:603
+msgid ""
+"Translate this app: https://www.transifex.com/danielnylander/packetlens/"
+msgstr ""
+
+#: src/pcap_viewer/main.py:609
 msgid "No capture loaded"
 msgstr ""
 
-#: src/pcap_viewer/main.py:621
+#: src/pcap_viewer/main.py:647
 msgid "DNS Queries"
+msgstr ""
+
+#: src/pcap_viewer/main.py:686
+msgid "Welcome"
+msgstr ""
+
+#: src/pcap_viewer/main.py:691
+msgid "Welcome to PacketLens"
+msgstr ""
+
+#: src/pcap_viewer/main.py:692
+msgid ""
+"View and analyze network packet captures.\n"
+"\n"
+"✓ Open .pcap and .pcapng files\n"
+"✓ Protocol dissection\n"
+"✓ Filter by protocol\n"
+"✓ Export as CSV"
+msgstr ""
+
+#: src/pcap_viewer/main.py:693
+msgid "Get Started"
 msgstr ""
 
 #: src/pcap_viewer/conversations.py:96

@@ -33,6 +33,27 @@ _ = gettext.gettext
 APP_ID = "se.danielnylander.packetlens"
 
 
+
+def _wlc_settings_path():
+    import os
+    xdg = os.environ.get("XDG_CONFIG_HOME", os.path.expanduser("~/.config"))
+    d = os.path.join(xdg, "pcap-viewer")
+    os.makedirs(d, exist_ok=True)
+    return os.path.join(d, "welcome.json")
+
+def _load_wlc_settings():
+    import os, json
+    p = _wlc_settings_path()
+    if os.path.exists(p):
+        with open(p) as f:
+            return json.load(f)
+    return {"welcome_shown": False}
+
+def _save_wlc_settings(s):
+    import json
+    with open(_wlc_settings_path(), "w") as f:
+        json.dump(s, f, indent=2)
+
 class PacketObject(GObject.Object):
     """GObject wrapper for packet data to use with Gio.ListStore."""
 
@@ -561,6 +582,11 @@ class PcapViewerWindow(Adw.ApplicationWindow):
         prefs.add(display_page)
         prefs.add(network_page)
         prefs.present()
+        # Welcome dialog
+        self._wlc_settings = _load_wlc_settings()
+        if not self._wlc_settings.get("welcome_shown"):
+            self._show_welcome(self.props.active_window or self)
+
 
     def _on_about(self, action, param):
         about = Adw.AboutDialog(
@@ -654,3 +680,33 @@ def main():
 
 if __name__ == "__main__":
     sys.exit(main())
+
+    def _show_welcome(self, win):
+        dialog = Adw.Dialog()
+        dialog.set_title(_("Welcome"))
+        dialog.set_content_width(420)
+        dialog.set_content_height(480)
+        page = Adw.StatusPage()
+        page.set_icon_name("network-wired-symbolic")
+        page.set_title(_("Welcome to PacketLens"))
+        page.set_description(_("View and analyze network packet captures.\n\n✓ Open .pcap and .pcapng files\n✓ Protocol dissection\n✓ Filter by protocol\n✓ Export as CSV"))
+        btn = Gtk.Button(label=_("Get Started"))
+        btn.add_css_class("suggested-action")
+        btn.add_css_class("pill")
+        btn.set_halign(Gtk.Align.CENTER)
+        btn.set_margin_top(12)
+        btn.connect("clicked", self._on_welcome_close, dialog)
+        page.set_child(btn)
+        box = Adw.ToolbarView()
+        hb = Adw.HeaderBar()
+        hb.set_show_title(False)
+        box.add_top_bar(hb)
+        box.set_content(page)
+        dialog.set_child(box)
+        dialog.present(win)
+
+    def _on_welcome_close(self, btn, dialog):
+        self._wlc_settings["welcome_shown"] = True
+        _save_wlc_settings(self._wlc_settings)
+        dialog.close()
+

@@ -654,6 +654,7 @@ class PcapViewerApp(Adw.Application):
 
     def __init__(self):
         super().__init__(application_id=APP_ID)
+        GLib.set_application_name(_("PacketLens"))
         self._window = None
 
     def do_activate(self):

@@ -1,15 +1,13 @@
 [Desktop Entry]
+Version=1.1
 Type=Application
-StartupWMClass=se.danielnylander.packetlens
 Name=PacketLens
 Name[sv]=PacketLens
-Comment=Analyze network packet captures
-Comment[sv]=Analysera inspelad nätverkstrafik
-GenericName=Network Packet Analyzer
-GenericName[sv]=Analysera nätverkspaket
-Exec=packetlens %f
-Icon=se.danielnylander.packetlens
+Comment=Network packet capture viewer
+Comment[sv]=Visning av nätverkspaketfångst
+Exec=packetlens
+Icon=packetlens
+Categories=Network;GTK;
 Terminal=false
-MimeType=application/vnd.tcpdump.pcap;application/x-pcapng;
-Categories=Network;Development;
-Keywords=pcap;network;packet;capture;sniffer;packetlens;
+StartupNotify=true
+StartupWMClass=se.danielnylander.packetlens

@@ -1,5 +1,11 @@
+packetlens (0.2.7-2) unstable; urgency=medium
+
+  * Fix ITP bug number in changelog. (Closes: #1129387)
+
+ -- Daniel Nylander <daniel@danielnylander.se>  Sun, 01 Mar 2026 18:28:00 +0100
+
 packetlens (0.2.7-1) unstable; urgency=low
 
-  * Initial release. (Closes: #1129387)
+  * Initial release.
 
  -- Daniel Nylander <daniel@danielnylander.se>  Sun, 01 Mar 2026 18:17:00 +0100

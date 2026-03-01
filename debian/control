@@ -1,0 +1,33 @@
+Source: packetlens
+Section: net
+Priority: optional
+Maintainer: Daniel Nylander <daniel@danielnylander.se>
+Build-Depends: debhelper-compat (= 13),
+               dh-python,
+               python3-all,
+               python3-setuptools,
+               python3-scapy,
+               python3-magic,
+               python3-gi,
+Standards-Version: 4.7.0
+Homepage: https://github.com/yeager/pcap-viewer
+Vcs-Browser: https://github.com/yeager/pcap-viewer
+Vcs-Git: https://github.com/yeager/pcap-viewer.git
+
+Package: packetlens
+Architecture: all
+Depends: ${python3:Depends},
+         ${misc:Depends},
+         python3-gi,
+         gir1.2-gtk-4.0,
+         gir1.2-adw-1,
+         python3-scapy,
+         python3-magic,
+Description: GTK4 network packet analyzer and PCAP viewer
+ PacketLens is a GTK4/libadwaita application for viewing and analyzing
+ network packet captures (PCAP/PCAPNG files). It provides packet
+ inspection, protocol dissection, filtering, and statistics in a
+ modern interface.
+ .
+ Features include hex view, protocol statistics, DNS/TLS/HTTP analysis,
+ file extraction, conversations view, and timeline visualization.

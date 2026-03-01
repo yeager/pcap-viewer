@@ -1,0 +1,3 @@
+data/se.danielnylander.packetlens.desktop usr/share/applications
+data/icons/se.danielnylander.packetlens.svg usr/share/icons/hicolor/scalable/apps
+data/man/packetlens.1 usr/share/man/man1

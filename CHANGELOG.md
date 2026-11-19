@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.8] — 2026-11-19
+
+- Keep bulk file exports within the selected directory and preserve existing files.
+- Clear results when switching captures.
+- Match HTTP/1.x requests with responses, including IPv6 traffic.
+- Restore protocol filters and add packet page navigation.
+
 ## [0.2.2] — 2026-02-15
 
 ### Added

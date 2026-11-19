@@ -8,6 +8,7 @@ import base64
 import binascii
 from collections import defaultdict
 from io import BytesIO
+from pathlib import PureWindowsPath
 
 import gi
 gi.require_version("Gtk", "4.0")
@@ -15,9 +16,9 @@ gi.require_version("Adw", "1")
 gi.require_version("GdkPixbuf", "2.0")
 from gi.repository import Gtk, Adw, Gio, GObject, Pango, GdkPixbuf, GLib
 
-from scapy.all import TCP, UDP, Raw, IP
+from scapy.all import TCP, Raw
 
-from .pcap_parser import get_protocol_name
+from .pcap_parser import get_tcp_endpoints
 
 _ = gettext.gettext
 
@@ -564,9 +565,22 @@ class FileExtractorView(Gtk.Box):
 
     def _save_all_files(self, directory):
         """Save all extracted files to a directory."""
+        written = skipped = 0
         for file_obj in self._extracted_files:
-            filepath = os.path.join(directory, file_obj.filename)
-            self._save_file(file_obj, filepath)
+            name = file_obj.filename
+            if (name in {"", ".", ".."} or name != os.path.basename(name)
+                    or PureWindowsPath(name).name != name or "\0" in name):
+                skipped += 1
+                continue
+            try:
+                with open(os.path.join(directory, name), "xb") as output:
+                    output.write(file_obj.data)
+                written += 1
+            except OSError:
+                skipped += 1
+        self._status_label.set_text(
+            _("Saved {written} files. Skipped {skipped}.").format(written=written, skipped=skipped)
+        )
 
     def _extract_files(self, packets):
         """Extract files from packet capture."""
@@ -577,8 +591,11 @@ class FileExtractorView(Gtk.Box):
         streams = defaultdict(list)
         for pkt in packets:
             if pkt.haslayer(TCP) and pkt.haslayer(Raw):
-                tcp = pkt[TCP]
-                stream_id = f"{pkt[IP].src}:{tcp.sport}-{pkt[IP].dst}:{tcp.dport}"
+                endpoints = get_tcp_endpoints(pkt)
+                if endpoints is None:
+                    continue
+                (src, sport), (dst, dport) = endpoints
+                stream_id = f"[{src}]:{sport}-[{dst}]:{dport}"
                 streams[stream_id].append(pkt)
 
         extracted_count = 0
@@ -779,10 +796,9 @@ class FileExtractorView(Gtk.Box):
         """Update with new packets."""
         self._pcap_file = pcap_file
         self._extract_btn.set_sensitive(pcap_file.packets is not None)
-        if not pcap_file.packets:
-            self._file_store.remove_all()
-            self._extracted_files.clear()
-            self._status_label.set_text(_("No files extracted yet"))
-            self._save_all_btn.set_sensitive(False)
-            self._preview_btn.set_sensitive(False)
-            self._save_btn.set_sensitive(False)
+        self._file_store.remove_all()
+        self._extracted_files.clear()
+        self._status_label.set_text(_("No files extracted yet"))
+        self._save_all_btn.set_sensitive(False)
+        self._preview_btn.set_sensitive(False)
+        self._save_btn.set_sensitive(False)

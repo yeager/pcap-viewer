@@ -2,16 +2,16 @@
 
 import gettext
 import re
-from collections import defaultdict
 from datetime import datetime
-from urllib.parse import urlparse, parse_qs
 
 import gi
 gi.require_version("Gtk", "4.0")
 gi.require_version("Adw", "1")
 from gi.repository import Gtk, Adw, Gio, GObject, Pango
 
-from scapy.all import TCP, Raw, IP
+from scapy.all import TCP
+
+from .pcap_parser import get_tcp_endpoints
 
 _ = gettext.gettext
 
@@ -30,6 +30,98 @@ COMMON_HEADERS = [
     'connection', 'content-type', 'content-length', 'cache-control',
     'cookie', 'set-cookie', 'location', 'referer', 'server'
 ]
+
+
+REQUEST_LINE = re.compile(rb"([A-Z]+) (\S+) HTTP/1\.[01]")
+RESPONSE_LINE = re.compile(rb"HTTP/1\.[01] ([0-9]{3})(?: (.*))?")
+
+
+def reassemble_http(segments):
+    """Return the contiguous captured bytes, trimming retransmissions."""
+    if not segments:
+        return b""
+    first_seq = segments[0][0]
+    ordered = sorted(segments, key=lambda item: (item[0] - first_seq + 2**31) % 2**32)
+    start = ordered[0][0]
+    data = bytearray()
+    for seq, payload in ordered:
+        offset = (seq - start) % 2**32
+        if offset > len(data):
+            break
+        data.extend(payload[max(0, len(data) - offset):])
+    return bytes(data)
+
+
+def read_chunked(data, pos):
+    body = bytearray()
+    while True:
+        end = data.find(b"\r\n", pos)
+        if end < 0:
+            return None
+        size_field = data[pos:end].split(b";", 1)[0]
+        if not re.fullmatch(rb"[0-9a-fA-F]+", size_field):
+            return None
+        size = int(size_field, 16)
+        pos = end + 2
+        if size == 0:
+            if data[pos:pos + 2] == b"\r\n":
+                return bytes(body), pos + 2
+            trailer_end = data.find(b"\r\n\r\n", pos)
+            return (bytes(body), trailer_end + 4) if trailer_end >= 0 else None
+        if data[pos + size:pos + size + 2] != b"\r\n":
+            return None
+        body.extend(data[pos:pos + size])
+        pos += size + 2
+
+
+def http_messages(data, *, response=False, request_methods=()):
+    """Parse one direction of an HTTP/1.x connection."""
+    pos = request_index = 0
+    while pos < len(data):
+        end = data.find(b"\r\n\r\n", pos)
+        if end < 0:
+            break
+        start_line, *lines = data[pos:end].split(b"\r\n")
+        match = (RESPONSE_LINE if response else REQUEST_LINE).fullmatch(start_line)
+        if match is None:
+            break
+        fields = tuple((part or b"").decode("latin-1") for part in match.groups())
+        status = int(fields[0]) if response else 0
+        headers = {}
+        for line in lines:
+            key, sep, value = line.partition(b":")
+            if sep:
+                headers[key.decode("latin-1").lower()] = value.decode("latin-1").strip()
+        pos = end + 4
+        method = request_methods[request_index] if request_index < len(request_methods) else ""
+        tunnel = response and (status == 101 or (method == "CONNECT" and 200 <= status < 300))
+        no_body = response and (tunnel or method == "HEAD" or 100 <= status < 200 or status in (204, 304))
+        length = headers.get("content-length")
+        declared_length = 0
+        if length is not None and re.fullmatch(r"[0-9]{1,18}", length):
+            declared_length = int(length)
+        encoding = headers.get("transfer-encoding", "").lower().split(",")[-1].strip()
+        if no_body:
+            body = b""
+        elif encoding == "chunked":
+            chunked = read_chunked(data, pos)
+            if chunked is None:
+                break
+            body, pos = chunked
+        elif length is not None:
+            if not re.fullmatch(r"[0-9]{1,18}", length):
+                break
+            body = data[pos:pos + declared_length]
+            pos += declared_length
+        elif response:
+            body, pos = data[pos:], len(data)
+        else:
+            body = b""
+        if not response or status >= 200 or status == 101:
+            yield fields, headers, body.decode("utf-8", errors="replace"), declared_length
+            request_index += 1
+        if tunnel:
+            break
 
 
 class HTTPTransactionObject(GObject.Object):
@@ -439,186 +531,65 @@ class HTTPAnalyzerView(Gtk.Box):
         self._http_store.remove_all()
         self._http_transactions.clear()
 
-        # Group TCP streams that might contain HTTP
-        http_streams = defaultdict(list)
-        
+        connections = []
+        active = {}
         for pkt in packets:
-            if pkt.haslayer(TCP) and pkt.haslayer(Raw):
-                tcp = pkt[TCP]
-                payload = pkt[Raw].load
-                
-                # Look for HTTP traffic (port 80 or HTTP-like content)
-                if (tcp.dport == 80 or tcp.sport == 80 or 
-                    b'HTTP/' in payload or 
-                    payload.startswith((b'GET ', b'POST ', b'PUT ', b'DELETE ', b'HEAD ', b'OPTIONS ', b'PATCH '))):
-                    
-                    stream_key = (pkt['IP'].src, tcp.sport, pkt['IP'].dst, tcp.dport)
-                    http_streams[stream_key].append(pkt)
-
-        # Analyze each potential HTTP stream
-        transactions_found = 0
-        method_counts = defaultdict(int)
-        status_counts = defaultdict(int)
-        host_counts = defaultdict(int)
-
-        for stream_key, stream_packets in http_streams.items():
-            src_addr, src_port, dst_addr, dst_port = stream_key
-            
-            # Sort packets by sequence number and timestamp
-            stream_packets.sort(key=lambda p: (p[TCP].seq, p.time))
-            
-            # Reassemble stream data
-            stream_data = b""
-            for pkt in stream_packets:
-                if pkt.haslayer(Raw):
-                    stream_data += pkt[Raw].load
-
-            # Parse HTTP transactions from stream
-            transactions = self._parse_http_stream(stream_data, src_addr, dst_addr, stream_packets[0].time)
-            
-            for transaction in transactions:
-                self._http_store.append(transaction)
-                self._http_transactions.append(transaction)
-                transactions_found += 1
-                
-                method_counts[transaction.method] += 1
-                if transaction.status_code > 0:
-                    status_category = transaction.status_code // 100
-                    status_counts[f"{status_category}xx"] += 1
-                host_counts[transaction.host] += 1
-
-        # Clear detail views
-        for view in [self._request_view, self._response_view, self._headers_view]:
-            buf = view.get_buffer()
-            buf.set_text(_("Select a transaction to view details"))
-
-        # Update status
-        self._status_label.set_text(
-            _("{transactions} HTTP transactions found").format(transactions=transactions_found)
-        )
-
-    def _parse_http_stream(self, stream_data, src_addr, dst_addr, base_timestamp):
-        """Parse HTTP requests and responses from stream data."""
-        transactions = []
-        
-        try:
-            stream_str = stream_data.decode('utf-8', errors='ignore')
-        except:
-            return transactions
-
-        # Split stream into potential HTTP messages
-        http_messages = re.split(r'\r?\n\r?\n', stream_str)
-        
-        current_request = None
-        
-        for message in http_messages:
-            if not message.strip():
+            endpoints = get_tcp_endpoints(pkt)
+            if endpoints is None:
                 continue
-                
-            lines = message.split('\n')
-            first_line = lines[0].strip()
-            
-            # Check if this is an HTTP request
-            request_match = re.match(r'^(GET|POST|PUT|DELETE|HEAD|OPTIONS|PATCH)\s+(\S+)\s+HTTP/\d\.\d', first_line)
-            if request_match:
-                method, url = request_match.groups()
-                
-                # Parse headers
-                headers = {}
-                body_start = 0
-                for i, line in enumerate(lines[1:], 1):
-                    line = line.strip()
-                    if not line:
-                        body_start = i + 1
-                        break
-                    if ':' in line:
-                        header, value = line.split(':', 1)
-                        headers[header.lower().strip()] = value.strip()
-                
-                # Extract body
-                body = '\n'.join(lines[body_start:]) if body_start < len(lines) else ""
-                
-                current_request = {
-                    'timestamp': base_timestamp,
-                    'method': method,
-                    'url': url,
-                    'headers': headers,
-                    'body': body,
-                    'src_addr': src_addr,
-                    'dst_addr': dst_addr
-                }
-                
-            # Check if this is an HTTP response
-            response_match = re.match(r'^HTTP/\d\.\d\s+(\d+)\s*(.*)$', first_line)
-            if response_match and current_request:
-                status_code = int(response_match.group(1))
-                status_text = response_match.group(2) or ""
-                
-                # Parse response headers
-                response_headers = {}
-                body_start = 0
-                for i, line in enumerate(lines[1:], 1):
-                    line = line.strip()
-                    if not line:
-                        body_start = i + 1
-                        break
-                    if ':' in line:
-                        header, value = line.split(':', 1)
-                        response_headers[header.lower().strip()] = value.strip()
-                
-                # Extract response body
-                response_body = '\n'.join(lines[body_start:]) if body_start < len(lines) else ""
-                
-                # Create transaction
-                transaction = HTTPTransactionObject(
-                    timestamp=current_request['timestamp'],
-                    method=current_request['method'],
-                    url=current_request['url'],
-                    status_code=status_code,
-                    status_text=status_text,
-                    content_type=response_headers.get('content-type', ''),
-                    content_length=int(response_headers.get('content-length', 0)),
-                    src_addr=current_request['src_addr'],
-                    dst_addr=current_request['dst_addr'],
-                    request_headers=current_request['headers'],
-                    response_headers=response_headers,
-                    request_body=current_request['body'],
-                    response_body=response_body
-                )
-                
-                transactions.append(transaction)
-                current_request = None
-        
-        # If we have a request without response, create a transaction anyway
-        if current_request:
-            transaction = HTTPTransactionObject(
-                timestamp=current_request['timestamp'],
-                method=current_request['method'],
-                url=current_request['url'],
-                status_code=0,
-                status_text="",
-                content_type="",
-                content_length=0,
-                src_addr=current_request['src_addr'],
-                dst_addr=current_request['dst_addr'],
-                request_headers=current_request['headers'],
-                response_headers={},
-                request_body=current_request['body'],
-                response_body=""
-            )
-            transactions.append(transaction)
-        
-        return transactions
+            src, dst = endpoints
+            tcp = pkt[TCP]
+            key = tuple(sorted(endpoints))
+            syn = bool(tcp.flags.S)
+            syn_id = (src, tcp.seq) if syn and not tcp.flags.A else None
+            current = active.get(key)
+            if current is None or (syn_id is not None and current[0] != syn_id):
+                current = (syn_id, {})
+                active[key] = current
+                connections.append(current[1])
+            payload = bytes(tcp.payload)
+            if not payload:
+                continue
+            _timestamp, segments = current[1].setdefault((src, dst), (float(pkt.time), []))
+            segments.append(((tcp.seq + syn) % 2**32, payload))
+
+        for streams in connections:
+            reassembled = {key: (timestamp, reassemble_http(segments))
+                           for key, (timestamp, segments) in streams.items()}
+            for (src, dst), (timestamp, data) in reassembled.items():
+                requests = list(http_messages(data))
+                if not requests:
+                    continue
+                methods = [fields[0] for fields, *_ in requests]
+                reply = reassembled.get((dst, src), (0, b""))[1]
+                responses = iter(http_messages(reply, response=True, request_methods=methods))
+                for (method, url), req_headers, req_body, _length in requests:
+                    (status, reason), res_headers, res_body, length = next(
+                        responses, (("0", ""), {}, "", 0))
+                    transaction = HTTPTransactionObject(
+                        timestamp=timestamp, method=method, url=url, status_code=int(status),
+                        status_text=reason, content_type=res_headers.get("content-type", ""),
+                        content_length=length, src_addr=src[0], dst_addr=dst[0],
+                        request_headers=req_headers, response_headers=res_headers,
+                        request_body=req_body, response_body=res_body,
+                    )
+                    self._http_store.append(transaction)
+                    self._http_transactions.append(transaction)
+
+        for view in (self._request_view, self._response_view, self._headers_view):
+            view.get_buffer().set_text(_("Select a transaction to view details"))
+        self._status_label.set_text(
+            _("{transactions} HTTP transactions found").format(transactions=len(self._http_transactions))
+        )
 
     def update_packets(self, pcap_file):
         """Update with new packets."""
         self._pcap_file = pcap_file
         self._analyze_btn.set_sensitive(pcap_file.packets is not None)
-        if not pcap_file.packets:
-            self._http_store.remove_all()
-            self._http_transactions.clear()
-            self._status_label.set_text(_("No HTTP analysis performed yet"))
-            # Clear detail views
-            for view in [self._request_view, self._response_view, self._headers_view]:
-                buf = view.get_buffer()
-                buf.set_text("")
+        self._http_store.remove_all()
+        self._http_transactions.clear()
+        self._status_label.set_text(_("No HTTP analysis performed yet"))
+        # Clear detail views
+        for view in [self._request_view, self._response_view, self._headers_view]:
+            buf = view.get_buffer()
+            buf.set_text("")

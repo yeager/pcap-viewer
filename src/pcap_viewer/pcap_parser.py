@@ -39,6 +39,17 @@ def get_protocol_name(pkt):
     return pkt.lastlayer().__class__.__name__
 
 
+def get_tcp_endpoints(pkt):
+    """Return the directional socket pair, or None for non-IP traffic."""
+    network = pkt.getlayer(IP)
+    if network is None:
+        network = pkt.getlayer(IPv6)
+    tcp = pkt.getlayer(TCP)
+    if network is None or tcp is None:
+        return None
+    return (network.src, tcp.sport), (network.dst, tcp.dport)
+
+
 def get_src_dst(pkt):
     """Extract source and destination addresses."""
     if pkt.haslayer(IP):
@@ -128,15 +139,23 @@ class PcapFile:
 
     def apply_filter(self, filter_str):
         """Apply a display filter (protocol-based simple filter)."""
+        filter_str = filter_str.strip()
         self._filter_str = filter_str
         if not filter_str or self.packets is None:
             self._filtered = None
             return
 
         f = filter_str.strip().lower()
+        transport = {"tcp": TCP, "udp": UDP, "icmp": ICMP}.get(f)
+        protocol_filter = f in {"http", "dns", "tls", "arp", "ip", "ipv6"}
         filtered = []
         for pkt in self.packets:
             proto = get_protocol_name(pkt).lower()
+            if transport is not None or protocol_filter:
+                matches = pkt.haslayer(transport) if transport is not None else f == proto
+                if matches:
+                    filtered.append(pkt)
+                continue
             if f == proto:
                 filtered.append(pkt)
                 continue
@@ -151,6 +170,8 @@ class PcapFile:
     def get_page(self, page=0):
         """Return a page of parsed packet info dicts."""
         pkts = self._get_packets()
+        if pkts is None:
+            return []
         start = page * PAGE_SIZE
         end = min(start + PAGE_SIZE, len(pkts))
         results = []
@@ -172,7 +193,7 @@ class PcapFile:
     def get_packet(self, index):
         """Get a single packet by index."""
         pkts = self._get_packets()
-        if 0 <= index < len(pkts):
+        if pkts is not None and 0 <= index < len(pkts):
             return pkts[index]
         return None
 

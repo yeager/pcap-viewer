@@ -486,10 +486,9 @@ class DNSAnalyzerView(Gtk.Box):
         """Update with new packets."""
         self._pcap_file = pcap_file
         self._analyze_btn.set_sensitive(pcap_file.packets is not None)
-        if not pcap_file.packets:
-            self._dns_store.remove_all()
-            self._dns_records.clear()
-            self._status_label.set_text(_("No DNS analysis performed yet"))
-            # Clear statistics
-            while self._stats_box.get_first_child():
-                self._stats_box.remove(self._stats_box.get_first_child())
+        self._dns_store.remove_all()
+        self._dns_records.clear()
+        self._status_label.set_text(_("No DNS analysis performed yet"))
+        # Clear statistics
+        while self._stats_box.get_first_child():
+            self._stats_box.remove(self._stats_box.get_first_child())

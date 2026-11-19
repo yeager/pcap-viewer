@@ -12,6 +12,8 @@ from gi.repository import Gtk, Adw, Gio, GObject, Pango
 
 from scapy.all import TCP, Raw
 
+from .pcap_parser import get_tcp_endpoints
+
 _ = gettext.gettext
 
 # TLS constants
@@ -346,8 +348,11 @@ class TLSAnalyzerView(Gtk.Box):
                 tcp = pkt[TCP]
                 # Look for TLS traffic on common ports or with TLS content
                 if tcp.dport in [443, 993, 995, 636, 989, 990] or tcp.sport in [443, 993, 995, 636, 989, 990]:
-                    stream_key = (pkt['IP'].src, tcp.sport, pkt['IP'].dst, tcp.dport)
-                    tls_streams[stream_key].append(pkt)
+                    endpoints = get_tcp_endpoints(pkt)
+                    if endpoints is None:
+                        continue
+                    (src, sport), (dst, dport) = endpoints
+                    tls_streams[src, sport, dst, dport].append(pkt)
 
         # Analyze each potential TLS stream
         connections_found = 0
@@ -594,12 +599,11 @@ class TLSAnalyzerView(Gtk.Box):
         """Update with new packets."""
         self._pcap_file = pcap_file
         self._analyze_btn.set_sensitive(pcap_file.packets is not None)
-        if not pcap_file.packets:
-            self._tls_store.remove_all()
-            self._tls_connections.clear()
-            self._status_label.set_text(_("No TLS analysis performed yet"))
-            # Clear details and statistics
-            buf = self._details_view.get_buffer()
-            buf.set_text("")
-            while self._stats_box.get_first_child():
-                self._stats_box.remove(self._stats_box.get_first_child())
+        self._tls_store.remove_all()
+        self._tls_connections.clear()
+        self._status_label.set_text(_("No TLS analysis performed yet"))
+        # Clear details and statistics
+        buf = self._details_view.get_buffer()
+        buf.set_text("")
+        while self._stats_box.get_first_child():
+            self._stats_box.remove(self._stats_box.get_first_child())

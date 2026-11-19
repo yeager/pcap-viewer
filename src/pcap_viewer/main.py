@@ -11,7 +11,7 @@ gi.require_version("Adw", "1")
 from gi.repository import Gtk, Adw, Gio, GObject, GLib, Gdk, Pango
 
 from . import __version__
-from .pcap_parser import PcapFile, get_layers, format_hex
+from .pcap_parser import PAGE_SIZE, PcapFile, get_layers, format_hex
 from .hex_view import HexView
 from .stats import compute_stats
 from .file_extractor import FileExtractorView
@@ -128,6 +128,7 @@ class PcapViewerWindow(Adw.ApplicationWindow):
         self.set_size_request(800, 500)
 
         self.pcap_file = PcapFile()
+        self._load_id = 0
         self._current_page = 0
 
         self._build_ui()
@@ -145,7 +146,7 @@ class PcapViewerWindow(Adw.ApplicationWindow):
         filter_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=6)
         
         self._filter_entry = Gtk.SearchEntry()
-        self._filter_entry.set_placeholder_text(_("BPF Filter (e.g., tcp port 80)…"))
+        self._filter_entry.set_placeholder_text(_("Filter by protocol, address, or text…"))
         self._filter_entry.set_size_request(300, -1)
         self._filter_entry.connect("activate", self._on_filter_activate)
         filter_box.append(self._filter_entry)
@@ -259,7 +260,18 @@ class PcapViewerWindow(Adw.ApplicationWindow):
         self._status_label.set_margin_start(8)
         self._status_label.set_margin_top(4)
         self._status_label.set_margin_bottom(4)
-        packets_box.append(self._status_label)
+        bar = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=6)
+        self._status_label.set_hexpand(True)
+        bar.append(self._status_label)
+        self._previous_page = Gtk.Button(label=_("Previous page"))
+        self._next_page = Gtk.Button(label=_("Next page"))
+        self._previous_page.set_sensitive(False)
+        self._next_page.set_sensitive(False)
+        self._previous_page.connect("clicked", self._change_page, -1)
+        self._next_page.connect("clicked", self._change_page, 1)
+        bar.append(self._previous_page)
+        bar.append(self._next_page)
+        packets_box.append(bar)
 
         paned_v1 = Gtk.Paned(orientation=Gtk.Orientation.VERTICAL)
         paned_v1.set_vexpand(True)
@@ -422,17 +434,26 @@ class PcapViewerWindow(Adw.ApplicationWindow):
         """Load a PCAP file in a background thread."""
         self._toast_overlay.add_toast(Adw.Toast(title=_("Loading…")))
 
+        self._load_id += 1
+        load_id = self._load_id
+
         def do_load():
             try:
-                self.pcap_file.load(filepath)
-                GLib.idle_add(self._on_file_loaded, filepath)
+                capture = PcapFile()
+                capture.load(filepath)
+                GLib.idle_add(self._on_file_loaded, filepath, capture, load_id)
             except Exception as e:
-                GLib.idle_add(self._on_load_error, str(e))
+                GLib.idle_add(self._on_load_error, str(e), load_id)
 
         thread = threading.Thread(target=do_load, daemon=True)
         thread.start()
 
-    def _on_file_loaded(self, filepath):
+    def _on_file_loaded(self, filepath, capture, load_id):
+        if load_id != self._load_id:
+            return
+        self.pcap_file = capture
+        self._filter_combo.set_active(0)
+        self._filter_entry.set_text("")
         self.set_title(f"{os.path.basename(filepath)} — {_('PacketLens')}")
         self._current_page = 0
         self._populate_packets()
@@ -448,10 +469,17 @@ class PcapViewerWindow(Adw.ApplicationWindow):
         
         self._stack.set_visible_child_name("content")
 
-    def _on_load_error(self, msg):
-        self._toast_overlay.add_toast(Adw.Toast(title=_("Error: ") + msg))
+    def _on_load_error(self, msg, load_id):
+        if load_id == self._load_id:
+            self._toast_overlay.add_toast(Adw.Toast(title=_("Error: ") + msg))
+
+    def _change_page(self, button, direction):
+        self._current_page += direction
+        self._populate_packets()
 
     def _populate_packets(self):
+        self._layer_store.remove_all()
+        self._hex_view.set_hex_text("")
         self._packet_store.remove_all()
         page = self.pcap_file.get_page(self._current_page)
         for p in page:
@@ -467,9 +495,13 @@ class PcapViewerWindow(Adw.ApplicationWindow):
             )
             self._packet_store.append(obj)
         total = self.pcap_file.total_count
-        shown = len(page)
+        start = self._current_page * PAGE_SIZE
+        end = start + len(page)
+        self._previous_page.set_sensitive(start > 0)
+        self._next_page.set_sensitive(end < total)
         self._status_label.set_text(
-            _("{shown} of {total} packets").format(shown=shown, total=total)
+            _("{first}–{last} of {total} packets").format(
+                first=start + 1 if page else 0, last=end, total=total)
         )
 
     def _on_filter_activate(self, entry):
@@ -484,9 +516,9 @@ class PcapViewerWindow(Adw.ApplicationWindow):
         
         filter_map = {
             _("All packets"): "",
-            "HTTP": "tcp port 80",
-            "DNS": "udp port 53", 
-            "TLS": "tcp port 443",
+            "HTTP": "HTTP",
+            "DNS": "DNS", 
+            "TLS": "TLS",
             "TCP": "tcp",
             "UDP": "udp", 
             "ICMP": "icmp"

@@ -1,3 +1,10 @@
+packetlens (0.2.8-1) unstable; urgency=medium
+
+  * Fix capture switching, safe bulk export, filter presets and pagination.
+  * Pair HTTP requests and responses and support IPv6 in the analyzers.
+
+ -- Daniel Nylander <daniel@danielnylander.se>  Thu, 19 Nov 2026 12:00:00 +0100
+
 packetlens (0.2.7-2) unstable; urgency=medium
 
   * Fix ITP bug number in changelog. (Closes: #1129387)

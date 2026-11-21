@@ -812,3 +812,21 @@ msgstr "{count} konversationer hittades"
 #: src/pcap_viewer/conversations.py:371
 msgid "Select a conversation to view details"
 msgstr "Välj en konversation för att visa detaljer"
+
+msgid "Filter by protocol, address, or text…"
+msgstr "Filtrera efter protokoll, adress eller text…"
+
+msgid "Help translate"
+msgstr "Hjälp till att översätta"
+
+msgid "Next page"
+msgstr "Nästa sida"
+
+msgid "Previous page"
+msgstr "Föregående sida"
+
+msgid "Saved {written} files. Skipped {skipped}."
+msgstr "Sparade {written} filer. Hoppade över {skipped}."
+
+msgid "{first}–{last} of {total} packets"
+msgstr "{first}–{last} av {total} paket"

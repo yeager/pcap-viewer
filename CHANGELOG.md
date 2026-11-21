@@ -1,5 +1,9 @@
 # Changelog
 
+## [0.2.9]
+
+- Complete Swedish translations for filtering, paging and extraction.
+
 ## [0.2.8] — 2026-11-19
 
 - Keep bulk file exports within the selected directory and preserve existing files.
